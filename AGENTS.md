@@ -19,8 +19,8 @@
   approval at their planned stages. Never store or print credentials.
 - Use Node from `.nvmrc` and `npm ci`. Current checks: `npm run validate`.
   `npm run dev` starts the playground; `npm run build` emits ESM/CSS/types.
-  `test:dist` requires the build. Unit/E2E commands currently have no tests and
-  must not be included as green checks until real suites exist.
+  `test:dist` requires the build. Unit tests now cover pure core/adapters. E2E currently has no tests and
+  must not be included as a green check until real suites exist.
 - Link stage issues in PRs, keep issue labels honest, and update roadmap/progress.
 - Run checks appropriate to the change; avoid redundant tests and unsupported
   claims of passing tests or product capabilities.

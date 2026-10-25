@@ -14,4 +14,9 @@
 - Document the reference parity matrix and intentional migration differences.
 - Verify positive and intentionally invalid TypeScript/template examples.
 
-No table implementation or npm release is available yet.
+- Port readonly pure data/column/filter/selection/pagination/provider/URL helpers.
+- Add abortable CSV exports with row limits and complete-result checks.
+- Add lazy, resilient localStorage persistence and root adapter/type exports.
+- Run meaningful core/adapter behavior checks in CI.
+
+No table component implementation or npm release is available yet.

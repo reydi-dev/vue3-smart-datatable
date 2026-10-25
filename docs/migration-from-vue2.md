@@ -1,6 +1,6 @@
-# Migration from Vue 2 — proposed contracts
+# Migration from Vue 2 — accepted contracts
 
-This guide describes the stage 3 proposal. The Vue 3 table is not implemented or
+This guide describes the accepted stage 3 contract. The Vue 3 table is not implemented or
 published yet. Do not replace a production Vue 2 installation with this repository.
 The two repositories and package versions remain independent.
 
@@ -9,8 +9,8 @@ The two repositories and package versions remain independent.
 The intended package is `@reydi-dev/vue3-smart-datatable`, not the existing
 unrelated unscoped npm package. Once released, the intended default/named component
 export is SmartDataTable, with type exports and `@reydi-dev/vue3-smart-datatable/styles.css`.
-The current root exports only types and the temporary PipelineProbe.
-CSV and storage factories will be root exports after their implementation; no
+The current root exports types, CSV/storage factories, their option types, and
+the temporary PipelineProbe. The real component is not yet exported. No
 adapter subpath is promised until a real independent export is built.
 ESM is the supported build format; no Vue 2 compatibility layer or CJS is planned.
 
@@ -72,11 +72,12 @@ arbitrary reason argument. Use Vue's template ref with SmartDataTableExpose.
 No other Options API methods are public.
 
 ExporterContext gains signal; custom adapters should stop work when aborted.
-Built-in CSV will have a 100,000 row default cap (configurable maxRows) and reject
+Built-in CSV has a 100,000 row default cap (configurable maxRows) and reject
 partial/over-limit exports rather than downloading an incomplete result.
 Exports keep a query snapshot and do not navigate the visible table. Only one can
 run at a time. Storage remains optional with version-1 visibility state; stale
 async restores no longer overwrite newer parent/user intent.
 
-None of these runtime differences is implemented by the stage 3 type fixtures.
-Review and approve the [matrix](contract-matrix.md) before the core/UI port.
+The stage 3 contract was approved before the core port. Stage 4 implements pure
+helpers and adapters; reactive lifecycle and component differences remain pending.
+The [matrix](contract-matrix.md) records the implementation/verification boundary.

@@ -12,6 +12,9 @@ test('the package lists its declared outputs and excludes development sources', 
     'dist/smart-data-table.js',
     'dist/smart-data-table.css',
     'dist/types/index.d.ts',
+    'dist/types/types/index.d.ts',
+    'dist/types/adapters/exporters/csv.d.ts',
+    'dist/types/adapters/persistence/local-storage.d.ts',
     'LICENSE',
   ]) {
     assert.ok(paths.includes(required), `Missing package output: ${required}`)
@@ -24,4 +27,14 @@ test('the package lists its declared outputs and excludes development sources', 
   const bundle = await readFile('dist/smart-data-table.js', 'utf8')
   assert.match(bundle, /from ["']vue["']/)
   assert.doesNotMatch(bundle, /createApp|@vue\/runtime-core/)
+})
+
+test('built root adapter exports can be imported and created without browser globals', async () => {
+  const { createCsvExporter, createLocalStoragePersistenceAdapter } =
+    await import('../../dist/smart-data-table.js')
+  assert.deepEqual(createCsvExporter().scopes, ['current', 'all'])
+  assert.equal(
+    await createLocalStoragePersistenceAdapter().load('server-import'),
+    null,
+  )
 })
