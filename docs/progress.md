@@ -29,7 +29,7 @@
   name recorded here overrides its original unscoped suggestion.
 - No runtime code, package manifest, dependency installation, release, or demo
   deployment has been created.
-- PR: pending creation; update this entry after the PR is opened.
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/1 (open; awaiting user review).
 
 ### Validation
 
@@ -41,7 +41,8 @@
   were sufficient for the authenticated GitHub API and Git transport.
 - Build, lint, typecheck, unit, browser, and distribution tests: not run;
   no toolchain or executable library exists at this stage.
-- Whitespace validation: pending final documentation check.
+- Whitespace validation: `git diff --cached --check` passed for all stage 1 files.
+- Verified the stored implementation plan is byte-for-byte identical to the supplied document.
 - CI: not configured; introduced in stage 2. No green CI claim is made.
 
 ### Next action
