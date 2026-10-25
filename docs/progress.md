@@ -29,7 +29,7 @@
   name recorded here overrides its original unscoped suggestion.
 - No runtime code, package manifest, dependency installation, release, or demo
   deployment has been created.
-- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/1 (open; awaiting user review).
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/1 (approved and squash-merged).
 
 ### Validation
 
@@ -47,6 +47,48 @@
 
 ### Next action
 
-Review the stage 1 PR and obtain user approval before merging. After approval,
-recheck its current head and available checks, squash merge, record the result,
-and proceed to stage 2 (toolchain, build, playground, and base CI).
+Completed: user approved stage 1; rechecked its head and mergeability, confirmed
+no configured checks, and squash-merged as
+`caffa1db1b840b6901b1f8720badcac9c4bc136a`. Deleted its working branch.
+
+## 2026-10-25 — Stage 2 and public project tracking
+
+### Scope and implementation
+
+- User requested professional public issue/goal tracking for this portfolio repository.
+- Created beta and stable milestones, descriptive work/status labels, repository
+  topics, and stage issues #2–#13. Issues #2/#3 record completed stages 0/1
+  retrospectively; #4 tracks the current stage. Future stages remain planned.
+- Added a public roadmap, bug/feature issue forms, PR template, and contributor
+  instructions connecting issues, PRs, validation evidence, and stage approval.
+- Configured strict TypeScript, Vue 3 Composition API, Vite ESM library mode,
+  external Vue, separate CSS/declarations, and isolated playground build.
+- Added exact dependencies and lockfile, Node 24.21.0 version file, ESLint,
+  Prettier, Vue Test Utils, Vitest and Playwright configuration.
+- Added a temporary reactive `PipelineProbe`, clearly marked as non-product API.
+  No table functionality or public release is claimed.
+- Added read-only PR/main CI with cancellation of obsolete runs. It runs install
+  from lockfile and the checks that actually have meaningful implementations.
+- Recorded ESM-only output, conservative Vue peer range, and TypeScript 5.9.3
+  compatibility choice in `docs/architecture.md`.
+
+### Validation and limitations
+
+- Dependency installation completed: 219 audited packages, zero reported vulnerabilities.
+- `npm run validate` passed locally: formatting, lint, strict typecheck, 1 SFC
+  component interaction check, library/declaration build, 1 package-output check
+  (including `npm pack --dry-run` and external Vue), and playground build.
+- Current library output is a probe only (0.69 kB JS, 0.21 kB CSS); these are not
+  representative product size measurements.
+- Unit and E2E suites do not exist yet; their commands are configured but not run
+  or represented as passing. Browser download is unnecessary for this stage.
+- The distribution check inspects package outputs; actual tarball installation
+  and supported-version/SSR consumer checks remain stage 8.
+- Clean lockfile install and validation will also run in GitHub CI. Remote status
+  and PR link will be recorded after opening the PR.
+- Package remains `private: true`. No demo, npm package, tag, or Release published.
+
+### Next action
+
+Obtain user approval for the stage 2 PR after CI passes. Then recheck its head,
+squash merge, close #4, and start the public-contract/parity work in #5.

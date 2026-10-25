@@ -16,8 +16,10 @@
   prefer squash merge and delete the working branch afterward.
 - npm publication, public releases, and demo deployment require explicit user
   approval at their planned stages. Never store or print credentials.
-- No Node package or build/test scripts exist yet. For this documentation stage,
-  use `git diff --check` and inspect the changed files. Stage 2 must document
-  actual commands after adding the toolchain. Do not invent placeholder tests.
+- Use Node from `.nvmrc` and `npm ci`. Current checks: `npm run validate`.
+  `npm run dev` starts the playground; `npm run build` emits ESM/CSS/types.
+  `test:dist` requires the build. Unit/E2E commands currently have no tests and
+  must not be included as green checks until real suites exist.
+- Link stage issues in PRs, keep issue labels honest, and update roadmap/progress.
 - Run checks appropriate to the change; avoid redundant tests and unsupported
   claims of passing tests or product capabilities.
