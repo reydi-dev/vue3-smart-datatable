@@ -46,7 +46,7 @@
     "build": "vite build && vue-tsc -p tsconfig.build.json",
     "test:dist": "node --test tests/consumers/distribution.test.mjs",
     "build:demo": "vite build --config vite.demo.config.ts",
-    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run test:components && npm run build && npm run test:dist && npm run build:demo"
+    "validate": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:components && npm run build && npm run test:dist && npm run build:demo"
   },
   "peerDependencies": {
     "vue": "^3.5.44"

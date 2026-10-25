@@ -14,7 +14,8 @@ README, changelog, license, and npm-required metadata are packed.
 
 The temporary `PipelineProbe` verifies SFC compilation, reactive mounting, ESM,
 declarations, and CSS output. It must be removed when the real component replaces
-it. Its export is not an accepted table API. No adapter subpaths exist yet.
+it. Its export is not an accepted table API. Root CSV/storage adapter factories are implemented in stage 4; no adapter
+subpaths exist.
 
 The playground has its own Vite config and `dist-demo` output. It is excluded from
 the package and is not deployed by CI. No router, store, HTTP client, UI framework,
@@ -54,18 +55,18 @@ formatting, lint, strict types, library build, and demo build. CI runs these che
 on PRs and main using `npm ci`. The distribution check is a preliminary output
 check, not the independently installed consumer verification planned in stage 8.
 
-Unit and E2E commands are configured for future suites. They currently fail on
-missing tests and are intentionally not included in CI until meaningful tests
-exist. No `passWithNoTests`, placeholder assertions, or fake coverage target is
+Unit tests for pure core/adapters are implemented and run in CI from stage 4.
+The E2E command still fails on missing tests and is intentionally not included in
+CI until the real UI exists. No `passWithNoTests`, placeholder assertions, or fake coverage target is
 used. Playwright Chromium is configured but no browser support claim is made.
 
-## Stage 3 proposed public contract
+## Stage 3 accepted public contract
 
 Public contracts live in `src/types/index.ts` without a Vue or browser runtime
 import. They adapt the pinned MIT-licensed reference, retain all 12 cell kinds,
 and use Row extends object with unknown cell/provider values. The root exports
-types now, not a pretend working SmartDataTable component. Public adapter
-factories and the component/default export wait for their real implementation.
+types now, not a pretend working SmartDataTable component. CSV/storage factories are implemented from stage 4; the component/default export
+waits for its real implementation.
 
 Six optional model props use undefined to select uncontrolled ownership; defined
 values are parent-authoritative. Use explicit generic props/emits/slots instead
@@ -73,10 +74,10 @@ of macro defaults that blur absent versus empty models. No local mirror of a
 controlled prop is planned. Query transactions coalesce after the parent flush;
 state/lifecycle logic belongs in composables, not renderers.
 
-The complete proposal and intentional behavioral differences are in
+The accepted contract and intentional behavioral differences are in
 [API](api.md), [contract matrix](contract-matrix.md), and
-[migration](migration-from-vue2.md). Stage 3 approval is the acceptance boundary
-before core/provider/UI work begins.
+[migration](migration-from-vue2.md). Stage 3 approval established the acceptance boundary before core/provider/UI
+work began.
 
 Compile-only Vue fixtures exercise the same exported type interfaces through a
 non-product generic ContractProbe. Positive examples include six v-models,
@@ -89,3 +90,23 @@ tests. Actual component props/emits/slots must reuse these contracts later.
 Added eslint-config-prettier to turn off formatting rules that conflict with
 Prettier. The valid-v-slot rule permits dotted slot names used by the retained
 cell.<key> API. No runtime dependency was added.
+
+## Stage 4 pure core and adapters
+
+Port the reference logic with its MIT notice and pinned tag/commit recorded in
+each adapted source file. Internal modules use explicit .js specifiers for emitted
+ESM declarations. Core imports only pure local code and type-only contracts; no
+Vue, browser observer, CSS, playground or local reference-path dependency is added.
+
+Provider validation verifies arrays of object rows, filtered integer totals and
+container copies, including custom normalizer results. One narrow assertion maps
+validated objects to the consumer's generic Row; business schema validation remains
+the consumer's responsibility. Displayed row identity validation is separate so
+custom rowKey definitions can be applied without assuming id at the transport layer.
+
+CSV stays an in-memory adapter with a finite default cap, cancellation checkpoints,
+strict complete-page checks, and injected download for non-browser runtimes.
+The storage wrapper resolves browser globals lazily and catches optional-storage
+failures. Reactive restore precedence, serial saves, query snapshots, request race
+handling and export lifecycle events remain the composable responsibilities in
+stage 5. No browser listeners/timers are introduced in this stage.

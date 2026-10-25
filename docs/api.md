@@ -1,10 +1,10 @@
-# Proposed Vue 3 API
+# Vue 3 API contracts
 
-**Stage 3 contract for review, not a ready runtime API.** Only the types and
-compile-time examples exist. The package is private, the playground is a build
-probe, and `SmartDataTable` is not exported as a working component yet.
+**Stage 3 contract approved; full table implementation pending.** Stage 4 adds pure
+core helpers and CSV/storage adapters. The package remains private, the playground
+is a build probe, and `SmartDataTable` is not exported as a working component yet.
 
-This proposal is based on Vue 2 `v0.3.1`, commit
+This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
 See [parity matrix](contract-matrix.md) for every retained or changed surface.
 The source of type signatures is `src/types/index.ts`.
@@ -269,8 +269,8 @@ cleanly. Abort rejects with AbortError and emits export-error unless unmounted.
 
 The CSV adapter retains UTF-8 BOM, escaping, CRLF, formula guards, long/leading-zero
 numeric preservation, HTML-to-text conversion, cell truncation, and exportValue.
-Its planned options retain key/label/fileName/pageSize/download and add maxRows
-(default 100,000). Exceeding the positive integer cap fails with no partial download;
+Its implemented options retain key/label/fileName/pageSize/download and add maxRows
+(default 100,000); download may return void or Promise<void>. Exceeding the positive integer cap fails with no partial download;
 this is an in-memory export, not an unlimited streaming API. Progress is clamped
 to 0–100; fetchPage honors signal and validates responses. The default downloader
 needs a browser only when export is invoked; callers can inject download for other
@@ -292,3 +292,30 @@ does not establish support for older versions. No defineModel default is used.
 See the official [script setup reference](https://vuejs.org/api/sfc-script-setup.html),
 [models guide](https://vuejs.org/guide/components/v-model.html), and
 [event declarations](https://vuejs.org/guide/components/events.html).
+
+## Implemented adapter surface (stage 4)
+
+The root now exports `createCsvExporter`, `CsvExporterOptions`,
+`createLocalStoragePersistenceAdapter`, and `LocalStoragePersistenceOptions`.
+No adapter subpaths are defined. They are implemented independently of the table;
+provider lifecycle and model/export coordination remain stage 5.
+
+CSV all-scope export requires each fetched page to honor pageSize and report the
+same total as the starting query. A short/oversized page or changed total rejects
+without a partial download; no claim of a transactional backend snapshot is made.
+Abort is checked before work, after each fetch, and before download, including
+providers that ignore signal. Async download failures are awaited and propagated.
+Default browser download is checked only when invoked; inject download for Node.
+
+Storage options retain prefix (default `smart-data-table:`) and accept an injected
+getItem/setItem/removeItem storage object. The adapter accesses window.localStorage
+only inside method calls and catches blocked getters, corrupt JSON, invalid
+version/key arrays, read/quota/remove failures. Loads return fresh deduplicated
+string-key containers. Async restore precedence and save ordering belong to the
+future state composable, not this synchronous-storage wrapper.
+
+Pure local filtering retains the reference treatment of incomplete between
+clauses: keep them in provider filters but do not filter locally until both bounds
+exist. Numeric missing values no longer match zero through Number(null). Nullish
+and invalid sort values sort last stably in either direction. Core helpers are
+internal, with no root exports or Vue/DOM imports.

@@ -1,7 +1,8 @@
 # Vue 2 → Vue 3 contract matrix
 
-Stage 3 proposal awaiting maintainer approval. Runtime acceptance cases below are
-**planned**, not passing tests. The compile fixtures validate types only.
+Stage 3 contract approved. Runtime acceptance cases below describe the full table;
+stage 4 implements the pure-core/adapter subset recorded at the end of this file.
+The compile fixtures validate types only.
 Reference: [v0.3.1](https://github.com/reydi-dev/vue2-smart-datatable/tree/v0.3.1),
 commit `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`. Inspected the reference types,
 SmartDataTable, both renderers, filters/cells, provider helpers and adapters via
@@ -131,9 +132,27 @@ No cell type is removed. The icon value representation is the intentional change
 
 ## Approval boundary
 
-This PR intentionally changes ownership, activation, canonical script model event
+The approved stage 3 contract changes ownership, activation, canonical script model event
 names, autoLoad behavior, icon input, numeric breakpoint, default theme, validation,
-refresh signature, and export limits/cancellation. Maintainer approval of stage 3
-accepts these differences before runtime implementation. The scope still includes
+refresh signature, and export limits/cancellation. The maintainer approved stage 3 in PR #16 before runtime implementation. The scope still includes
 every existing cell kind and named slot. No broader redesign or extra feature is
 introduced.
+
+## Stage 4 evidence
+
+Pure core and adapter behavior now has Node unit checks in tests/unit:
+
+- data.test.ts: C01, D01, S01, the pure V01 normalization, numeric model defaults,
+  localized page parsing, readonly inputs, formatting and stable null/invalid sort.
+- filters.test.ts: operators and empty/partial clauses, zero/false/missing values.
+- provider-selection.test.ts: P01 container validation and custom normalizer
+  revalidation; S02 key/page operations without claiming reactive-model coverage.
+- csv.test.ts: E03 escaping/formula/cap safeguards, independent E01 current/all page
+  iteration, E02 signal checks and incomplete/changing-result rejection.
+- persistence-urls.test.ts: V03 storage-format/availability subset and C07 URL
+  allowlist; async state restore/save races and real DOM interaction remain pending.
+
+These checks do not complete M01–M05, provider request scheduling, lifecycle event
+ordering, keyboard/UI rendering, reactive persistence/export coordination, or X01
+packed consumer/SSR hydration verification. The built-root Node import check is a
+preliminary distribution check, not a full SSR-support claim.

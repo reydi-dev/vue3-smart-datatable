@@ -167,5 +167,63 @@ renamed PR head and available checks.
 
 ### Next action
 
-Review the stage 3 API differences before implementation. After approval and a
-current successful PR check, merge and begin pure core/adapters in issue #6.
+Completed: the user approved the contract PR. Its current head and successful
+checks were verified before merging; details follow in the stage 4 entry.
+
+## 2026-10-25 — Stage 3 merged; stage 4 core and adapters
+
+### Merge and tracking
+
+- User approved the prepared stage 3 result. Rechecked PR #16 head
+  `3ff3dd2d4777fa5e48bcd04f12d3d5b1ce34ef3c` and its successful validate check.
+- Squash-merged #16 as `e252fa104f07acbb4afbada62af97eb14fd2053e`.
+  Removed its local and remote branch and cleared the closed issue #5 status label.
+- Stage 4 is tracked in #6; current branch: `feat/core-and-adapters`.
+
+### Implementation
+
+- Adapted pinned MIT-licensed reference helpers for columns, nested values,
+  formatting, visibility, filters, stable sorting/paging, row identity, selection,
+  provider response normalization, localized page parsing and URL safety.
+- Pure core contains no Vue, DOM, styles, playground, or reference-path imports.
+  Browser viewport observation remains deferred to its composable/UI stage.
+- Corrected missing-number filter coercion, stable nullish/invalid sorting, and
+  validation of primitive/sparse provider rows, invalid totals and duplicate keys.
+  Business Row schema validation remains consumer-owned; the one generic boundary
+  assertion follows explicit transport-container validation.
+- Preserved inactive local partial ranges and retained them in provider filters,
+  including zero/false values. Input arrays/schemas/clauses are not mutated.
+- Added CSV current/all export with BOM, quoting, CRLF, HTML-to-text conversion,
+  formula neutralization (including leading whitespace/control characters), numeric
+  text preservation, cell truncation, exportValue, progress and filename options.
+- Implemented the approved 100,000 default maxRows cap, cancellation checkpoints,
+  complete-page/consistent-total checks, and no partial downloads. Async injected
+  download failures propagate. Default browser download is lazy with URL cleanup.
+- Added lazy optional localStorage persistence with injected storage support,
+  validated version-1 string keys, prefix isolation and graceful blocked/corrupt/
+  quota/read/remove behavior. Async state restore/save coordination remains stage 5.
+- Exported adapter factories/options from the root, with explicit ESM type paths.
+  Core functions stay internal and there are no invented adapter subpath exports.
+- Added real unit suites to the existing validate command/CI and updated guidance
+  to stop treating the unit suite as unwritten. No dependency was added.
+
+### Actual validation
+
+- `npm run validate` passed: format, lint, positive and expected-negative type
+  checks, 23 unit checks, the existing 1 pipeline-component check, library/CSS/
+  declaration build, 2 distribution checks (pack outputs plus built-root adapter
+  import without browser globals), and playground build.
+- After final CSV allocation/resource cleanup, reran the affected unit suite,
+  library/declaration build and both distribution checks successfully.
+- Node unit environment needs no browser or Vue mount. This verifies pure-helper
+  imports and behavior, not a claim of testing after uninstalling Vue.
+- Real table/provider lifecycle, reactive models, storage races, keyboard/mobile
+  interaction, independently installed tarball, and SSR hydration remain later
+  stages. E2E was not run because there is no actual UI suite yet.
+- PR and remote CI evidence will be recorded after opening the stage 4 PR.
+- Package remains private; no npm release, tag, GitHub Release or demo deployment.
+
+### Next action
+
+Review stage 4 and approve its PR before merge. Stage 5 (#7) will coordinate the
+accepted models, provider cancellation/races, persistence and export lifecycle.
