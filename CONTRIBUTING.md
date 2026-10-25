@@ -14,7 +14,8 @@ Individual commands: `format:check`, `lint`, `typecheck`, `test:components`,
 `test:unit`, `build`, `test:dist` (after build), and `build:demo`.
 
 `test:unit` runs pure core and adapter behavior tests in a Node environment;
-`test:components` runs the existing pipeline SFC check. `test:e2e` is configured
+`test:components` runs mounted state/provider/persistence/export fixtures and the
+existing pipeline SFC check. `test:e2e` is configured
 for the future real UI and currently has no tests. Do not claim it passes.
 Playwright browser installation is not required for the current validation command.
 

@@ -2,7 +2,7 @@
  * Adapted from reydi-dev/vue2-smart-datatable v0.3.1,
  * commit 3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12.
  * MIT License, copyright (c) 2026 Mohammad Reza Dehghani; see LICENSE.
- * Proposed Vue 3 contracts; runtime implementation follows in later stages.
+ * Accepted Vue 3 contracts; runtime implementation proceeds in stages.
  */
 export type DataRow = Record<string, unknown>
 export type RowKey = string | number

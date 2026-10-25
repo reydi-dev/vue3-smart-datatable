@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PipelineProbe } from '../src'
+import StateProbe from './StateProbe.vue'
 </script>
 
 <template>
@@ -14,5 +15,6 @@ import { PipelineProbe } from '../src'
     <h1>Vue 3 Smart DataTable</h1>
     <p>In development · not published · temporary build verification only</p>
     <PipelineProbe />
+    <StateProbe />
   </main>
 </template>

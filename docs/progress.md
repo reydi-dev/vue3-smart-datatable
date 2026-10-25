@@ -229,5 +229,75 @@ checks were verified before merging; details follow in the stage 4 entry.
 
 ### Next action
 
-Review stage 4 and approve its PR before merge. Stage 5 (#7) will coordinate the
-accepted models, provider cancellation/races, persistence and export lifecycle.
+Completed after the user approved stage 4; its head and current checks were
+reverified before merging. Stage 5 details follow.
+
+## 2026-10-25 — Stage 4 merged; stage 5 reactive state/provider
+
+### Merge and tracking
+
+- User approved the prepared stage 4 PR. Rechecked #17 head
+  `99734390ae1e2b78f5511d83c11c610362685edc` against the local head and successful
+  validate check before squash merge.
+- Merge commit: `9c1cd3adfba11faa6eba4fe23afa886e69f775dd`.
+  Removed the completed local/remote branch; issue #6 is closed.
+- Stage 5 is tracked by #7; branch: `feat/reactive-state-and-provider`.
+
+### Implementation
+
+- Added internal useDataTable/useDataSource/useColumnPersistence/useTableExport
+  composables plus a small abort/emit helper. They are not root/headless exports.
+- Models distinguish undefined ownership from explicit empty values, keep the
+  parent authoritative, support handoff, avoid echo loops and coalesce accepted
+  filter/sort/size/page transactions after the parent update flush.
+- Implemented local row/total/error snapshots, selection across pages, displayed
+  selected-row payloads, schema visibility changes, non-resurrecting removed sort,
+  page correction/refusal behavior and the accepted six-method ref object.
+- Provider work uses immediate invalidation, debounce, request IDs, AbortController
+  and abortable awaits. Old successes/errors/finalizers cannot commit over newer
+  data. Request/event containers are isolated from consumer mutation.
+- Implemented autoLoad=false, explicit refresh/retry, disabled behavior, source/
+  context/normalizer replacement, visible missing-provider errors even in manual
+  mode, current-response validation, and timer/listener/disposal cleanup.
+- Persistence guards newer parent/user intent and key changes, serializes writes
+  per adapter/key, waits behind earlier writes before restoring a key, and skips
+  queued work after disposal. Optional async failures do not become table errors.
+- Export snapshots accepted query/columns/inputs, leaves live pagination unchanged,
+  rejects concurrent/pending/failed/stale operations, clamps progress and aborts on
+  source replacement/unmount even if consumer work ignores signal.
+- Added pure query comparison/watch snapshots without changing local opaque select
+  value identity. No Vue or DOM imports were introduced into core.
+- Added a synthetic local/server StateProbe in the development playground and a
+  mounted StateHarness for actual composable integration tests. The public table
+  component, desktop/mobile renderers and UI are still not implemented.
+
+### Actual validation
+
+- Full `npm run validate` passed: format, lint, positive/expected-negative contract
+  types, 25 unit checks, 26 component checks (including the existing pipeline
+  probe), ESM/CSS/declaration build, 2 distribution checks and playground build.
+- Following the final manual-mode missing-provider guard, reran strict typecheck
+  and the affected 26 component checks successfully.
+- Mounted tests use controlled promises, fake timers and real Vue parent/child
+  model handling in jsdom. They cover stale/ignored-abort responses, accepted
+  query event order, coalescing/rejection, source replacement, retry, manual loads,
+  page correction, storage intent/key/write races, export snapshots/concurrency,
+  mutation isolation, progress, and disposal. No snapshot-only or placeholder test
+  was added to claim an unwritten feature.
+- E2E/browser compatibility, actual table slot/keyboard/rendering behavior,
+  independently installed tarball and SSR hydration remain stages 6–8; not run.
+- Opaque consumer operations already started cannot be undone by this coordinator;
+  signal must be honored to stop their external side effects. Late library state
+  commits/events and new queued persistence work are still suppressed.
+- No new dependency, publication, tag, public Release or demo deployment. Package
+  remains private.
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/18 (awaiting stage approval).
+- [CI run 40221152186](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40221152186)
+  passed for implementation commit `0e8682d1bfb2f172d40bc8b558db34f6574a66eb`,
+  including clean `npm ci` and the full validate command on Ubuntu. This follow-up
+  records validation evidence only; executable files are unchanged.
+
+### Next action
+
+Review and approve the stage 5 PR before merge. Stage 6 (#8) connects the accepted
+contracts and composables to the actual semantic desktop table and reference UI.
