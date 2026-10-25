@@ -290,7 +290,12 @@ reverified before merging. Stage 5 details follow.
   signal must be honored to stop their external side effects. Late library state
   commits/events and new queued persistence work are still suppressed.
 - No new dependency, publication, tag, public Release or demo deployment. Package
-  remains private. PR and current clean-install CI evidence will be recorded below.
+  remains private.
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/18 (awaiting stage approval).
+- [CI run 40221152186](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40221152186)
+  passed for implementation commit `0e8682d1bfb2f172d40bc8b558db34f6574a66eb`,
+  including clean `npm ci` and the full validate command on Ubuntu. This follow-up
+  records validation evidence only; executable files are unchanged.
 
 ### Next action
 
