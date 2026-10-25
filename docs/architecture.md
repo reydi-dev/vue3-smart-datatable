@@ -58,3 +58,34 @@ Unit and E2E commands are configured for future suites. They currently fail on
 missing tests and are intentionally not included in CI until meaningful tests
 exist. No `passWithNoTests`, placeholder assertions, or fake coverage target is
 used. Playwright Chromium is configured but no browser support claim is made.
+
+## Stage 3 proposed public contract
+
+Public contracts live in `src/types/index.ts` without a Vue or browser runtime
+import. They adapt the pinned MIT-licensed reference, retain all 12 cell kinds,
+and use Row extends object with unknown cell/provider values. The root exports
+types now, not a pretend working SmartDataTable component. Public adapter
+factories and the component/default export wait for their real implementation.
+
+Six optional model props use undefined to select uncontrolled ownership; defined
+values are parent-authoritative. Use explicit generic props/emits/slots instead
+of macro defaults that blur absent versus empty models. No local mirror of a
+controlled prop is planned. Query transactions coalesce after the parent flush;
+state/lifecycle logic belongs in composables, not renderers.
+
+The complete proposal and intentional behavioral differences are in
+[API](api.md), [contract matrix](contract-matrix.md), and
+[migration](migration-from-vue2.md). Stage 3 approval is the acceptance boundary
+before core/provider/UI work begins.
+
+Compile-only Vue fixtures exercise the same exported type interfaces through a
+non-product generic ContractProbe. Positive examples include six v-models,
+formatters, slots and row events. A separate vue-tsc run must reject exactly the
+intentionally invalid page and missing generic slot property; TypeScript
+@ts-expect-error cases additionally cover bad row/provider/model/breakpoint/ref
+usage. These checks run as part of typecheck in CI and are not runtime behavior
+tests. Actual component props/emits/slots must reuse these contracts later.
+
+Added eslint-config-prettier to turn off formatting rules that conflict with
+Prettier. The valid-v-slot rule permits dotted slot names used by the retained
+cell.<key> API. No runtime dependency was added.

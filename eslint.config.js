@@ -2,6 +2,7 @@ import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
 import vue from 'eslint-plugin-vue'
 import globals from 'globals'
+import prettier from 'eslint-config-prettier'
 
 export default tseslint.config(
   {
@@ -21,9 +22,8 @@ export default tseslint.config(
     files: ['**/*.vue'],
     languageOptions: { parserOptions: { parser: tseslint.parser } },
     rules: {
-      'vue/html-self-closing': 'off',
-      'vue/max-attributes-per-line': 'off',
-      'vue/singleline-html-element-content-newline': 'off',
+      'vue/valid-v-slot': ['error', { allowModifiers: true }],
     },
   },
+  prettier,
 )

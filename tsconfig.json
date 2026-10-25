@@ -17,6 +17,8 @@
     "playground/**/*.ts",
     "playground/**/*.vue",
     "tests/**/*.ts",
-    "*.config.ts"
-  ]
+    "*.config.ts",
+    "tests/**/*.vue"
+  ],
+  "exclude": ["tests/contracts/InvalidTemplate.vue"]
 }
