@@ -29,7 +29,7 @@
   name recorded here overrides its original unscoped suggestion.
 - No runtime code, package manifest, dependency installation, release, or demo
   deployment has been created.
-- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/1 (open; awaiting user review).
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/1 (approved and squash-merged).
 
 ### Validation
 
@@ -47,6 +47,71 @@
 
 ### Next action
 
-Review the stage 1 PR and obtain user approval before merging. After approval,
-recheck its current head and available checks, squash merge, record the result,
-and proceed to stage 2 (toolchain, build, playground, and base CI).
+Completed: user approved stage 1; rechecked its head and mergeability, confirmed
+no configured checks, and squash-merged as
+`caffa1db1b840b6901b1f8720badcac9c4bc136a`. Deleted its working branch.
+
+## 2026-10-25 — Stage 2 and public project tracking
+
+### Scope and implementation
+
+- User requested professional public issue/goal tracking for this portfolio repository.
+- Created beta and stable milestones, descriptive work/status labels, repository
+  topics, and stage issues #2–#13. Issues #2/#3 record completed stages 0/1
+  retrospectively; #4 tracks the current stage. Future stages remain planned.
+- Added a public roadmap, bug/feature issue forms, PR template, and contributor
+  instructions connecting issues, PRs, validation evidence, and stage approval.
+- Configured strict TypeScript, Vue 3 Composition API, Vite ESM library mode,
+  external Vue, separate CSS/declarations, and isolated playground build.
+- Added exact dependencies and lockfile, Node 24.21.0 version file, ESLint,
+  Prettier, Vue Test Utils, Vitest and Playwright configuration.
+- Added a temporary reactive `PipelineProbe`, clearly marked as non-product API.
+  No table functionality or public release is claimed.
+- Added read-only PR/main CI with cancellation of obsolete runs. It runs install
+  from lockfile and the checks that actually have meaningful implementations.
+- Recorded ESM-only output, conservative Vue peer range, and TypeScript 5.9.3
+  compatibility choice in `docs/architecture.md`.
+
+### Validation and limitations
+
+- Dependency installation completed: 219 audited packages, zero reported vulnerabilities.
+- `npm run validate` passed locally: formatting, lint, strict typecheck, 1 SFC
+  component interaction check, library/declaration build, 1 package-output check
+  (including `npm pack --dry-run` and external Vue), and playground build.
+- Current library output is a probe only (0.69 kB JS, 0.21 kB CSS); these are not
+  representative product size measurements.
+- Unit and E2E suites do not exist yet; their commands are configured but not run
+  or represented as passing. Browser download is unnecessary for this stage.
+- The distribution check inspects package outputs; actual tarball installation
+  and supported-version/SSR consumer checks remain stage 8.
+- Clean lockfile install and validation also passed in GitHub CI. PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/14.
+  Final CI status is recorded below.
+- Review caught and removed a dangling source CSS import in emitted declarations;
+  styles now enter through the probe SFC and stay separately exported.
+- Package remains `private: true`. No demo, npm package, tag, or Release published.
+
+### Remote validation
+
+- [CI run 40212865601](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40212865601)
+  passed for implementation commit `795b655517808339cec9a73aa9e8e9c33d2c3605`,
+  including `npm ci` and the full `npm run validate` command on Ubuntu.
+- This follow-up records the evidence only; no executable files changed.
+
+### Next action
+
+Obtain user approval for the stage 2 PR after CI passes. Then recheck its head,
+squash merge, close #4, and start the public-contract/parity work in #5.
+
+### Stage 2 approval and branch naming correction
+
+The user approved stage 2 subject to removing `codex` from branch names.
+Renamed the local and GitHub working branch to
+`chore/tooling-and-project-tracking`, and updated AGENTS, CONTRIBUTING, and the
+implementation plan. All future branch names must omit that word. Historical
+branch names above describe completed work only. The originally verbatim plan
+is now intentionally amended by this explicit user instruction.
+
+The approved implementation head `6046bd23861299e011bb32abba3883220c88222a`
+also passed [CI run 40212954156](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40212954156).
+The naming correction changes documentation only; merge follows a check of the
+renamed PR head and available checks.

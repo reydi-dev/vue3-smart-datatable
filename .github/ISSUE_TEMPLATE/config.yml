@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Roadmap and scope
+    url: https://github.com/reydi-dev/vue3-smart-datatable/blob/main/docs/roadmap.md
+    about: Check planned stages and the initial release scope.
+  - name: Security reporting
+    url: https://github.com/reydi-dev/vue3-smart-datatable/security/policy
+    about: Follow the security policy before disclosing a vulnerability.
