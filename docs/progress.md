@@ -84,9 +84,16 @@ no configured checks, and squash-merged as
   or represented as passing. Browser download is unnecessary for this stage.
 - The distribution check inspects package outputs; actual tarball installation
   and supported-version/SSR consumer checks remain stage 8.
-- Clean lockfile install and validation will also run in GitHub CI. Remote status
-  and PR link will be recorded after opening the PR.
+- Clean lockfile install and validation will also run in GitHub CI. PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/14.
+  Final CI status is recorded below.
+- Review caught and removed a dangling source CSS import in emitted declarations;
+  styles now enter through the probe SFC and stay separately exported.
 - Package remains `private: true`. No demo, npm package, tag, or Release published.
+
+### Remote validation
+
+- CI link: https://github.com/reydi-dev/vue3-smart-datatable/actions
+- GitHub validation is required before the stage is reported complete.
 
 ### Next action
 

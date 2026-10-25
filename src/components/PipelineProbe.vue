@@ -11,3 +11,5 @@ const count = ref(0)
     <button type="button" @click="count++">Probe clicks: {{ count }}</button>
   </section>
 </template>
+
+<style src="../styles/index.css"></style>
