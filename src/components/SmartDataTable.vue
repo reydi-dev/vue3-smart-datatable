@@ -1,18 +1,21 @@
 <!-- MIT License, copyright (c) 2026 Mohammad Reza Dehghani; adapted from vue2-smart-datatable v0.3.1. -->
 <script setup lang="ts" generic="Row extends object">
-import { computed, ref, onScopeDispose } from 'vue'
+import { computed, ref, shallowRef, watch, onScopeDispose } from 'vue'
 import { useDataTable } from '../composables/useDataTable.js'
 import { defaultMessages } from '../core/messages.js'
 import { defaultIcons } from '../core/icons.js'
 import { resolveRowKey } from '../core/columns.js'
 import { withoutEmptyFilters } from '../core/filters.js'
 import SmartTableDesktop from './SmartTableDesktop.vue'
+import SmartTableMobile from './SmartTableMobile.vue'
+import { useResponsiveLayout } from '../composables/useResponsiveLayout.js'
 import SmartTableFilters from './SmartTableFilters.vue'
 import SmartTableToolbar from './SmartTableToolbar.vue'
 import SmartTablePagination from './SmartTablePagination.vue'
 import SmartTableIcon from './SmartTableIcon.vue'
 import ColumnVisibilityDialog from './ColumnVisibilityDialog.vue'
 import type {
+  RowKey,
   ExportScope,
   SmartDataTableProps,
   SmartDataTableEmits,
@@ -49,6 +52,27 @@ const {
 } = table
 const { refresh, resetFilters, resetColumnVisibility } = table.exposed
 defineExpose(table.exposed)
+const isMobile = useResponsiveLayout(() => props.mobileBreakpoint)
+const expandedKeys = shallowRef<ReadonlySet<RowKey>>(new Set())
+function toggleDetails(key: RowKey, open: boolean) {
+  if (expandedKeys.value.has(key) === open) return
+  const next = new Set(expandedKeys.value)
+  if (open) next.add(key)
+  else next.delete(key)
+  expandedKeys.value = next
+}
+watch(rows, (value) => {
+  const current = new Set(value.map(rowKeyOf))
+  expandedKeys.value = new Set(
+    [...expandedKeys.value].filter((key) => current.has(key)),
+  )
+})
+watch(
+  () => props.rowKey,
+  () => {
+    expandedKeys.value = new Set()
+  },
+)
 const filtersOpen = ref(false),
   columnsDialog = ref(false),
   exportError = ref(false)
@@ -177,8 +201,11 @@ async function resetColumns() {
         </button></slot
       >
     </div>
-    <SmartTableDesktop
+    <component
+      :is="isMobile ? SmartTableMobile : SmartTableDesktop"
       v-else
+      :summary-limit="mobileSummaryLimit"
+      :expanded-keys="expandedKeys"
       :rows="rows"
       :columns="visibleColumns"
       :row-key-of="rowKeyOf"
@@ -194,6 +221,7 @@ async function resetColumns() {
       :messages="messages"
       :icons="icons"
       :row-class="rowClass"
+      @toggle-details="toggleDetails"
       @sort="table.setSort($event)"
       @select-page="table.selectPage($event)"
       @select-row="table.selectRow"
@@ -228,7 +256,13 @@ async function resetColumns() {
         #[`action.${action.key}`]="context"
         ><slot :name="`action.${action.key}`" v-bind="context"
       /></template>
-    </SmartTableDesktop>
+      <template v-if="slots['mobile-summary']" #mobile-summary="context"
+        ><slot name="mobile-summary" v-bind="context"
+      /></template>
+      <template v-if="slots['mobile-details']" #mobile-details="context"
+        ><slot name="mobile-details" v-bind="context"
+      /></template>
+    </component>
     <slot name="footer" :state="state"
       ><SmartTablePagination
         v-if="showPagination"

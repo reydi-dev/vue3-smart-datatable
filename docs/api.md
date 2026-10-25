@@ -1,9 +1,10 @@
 # Vue 3 API contracts
 
-**Desktop table implemented; package still private and unpublished.** The root
+**Responsive table implemented; package still private and unpublished.** The root
 exports the generic `SmartDataTable` as both default and named component, types,
-and CSV/storage factories. Desktop controls use the stage 5 composables. Mobile
-rendering and stage 7–8 accessibility/distribution/SSR verification remain pending.
+and CSV/storage factories. Both renderers use the stage 5 composables. Focused
+RTL/theme/keyboard checks are implemented; final visual approval and stage 8
+packed-consumer/distribution/SSR verification remain pending.
 
 This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
@@ -283,8 +284,9 @@ ordering; a changing dataset cannot be guaranteed to provide a transactional sna
 Compile-only fixtures in tests/contracts now use the actual exported generic
 SmartDataTable SFC. They exercise six models, formatters/slots, event payloads and
 rejected incompatible types. They prove signatures; mounted and browser checks
-provide separate desktop runtime evidence in the matrix. Packed-consumer, mobile
-and SSR/hydration acceptance remain stages 7–8.
+provide separate desktop/mobile runtime evidence in the matrix. Source-shell
+hydration has a narrow jsdom check; packed-consumer/SSR/hydration acceptance
+remains stage 8.
 
 The selected supported baseline stays Vue 3.5.44, TypeScript 5.9.3 and vue-tsc
 3.3.13. Generic SFCs, defineSlots and tuple emits are available from Vue 3.3; this
@@ -358,8 +360,7 @@ Mounted state fixtures verify controlled/uncontrolled handoff, coalescing,
 cancellation, retry, rejected page correction, persistence races and export
 snapshots. The desktop playground now uses the actual table, simulated provider,
 column persistence and CSV download. It remains a development example; the
-release documentation/demo, mobile rendering and packed-consumer/SSR acceptance
-remain later stages.
+release documentation/demo and packed-consumer/SSR acceptance remain later stages.
 
 ## Desktop presentation implemented in stage 6
 
@@ -395,6 +396,46 @@ provides reset. Pagination disables during loading/error/disabled states, valida
 localized page input and positive sizes. Export menu failures show the localized
 exportFailed message while programmatic exportData still rejects for callers.
 
-Light is the default palette, with no ancestor theme bridge. Full dark/RTL/mobile
-review and accessibility acceptance belong to stage 7; no SSR hydration or
-cross-browser support claim is made by this stage.
+Light is the default palette, with no ancestor theme bridge. Stage 7 adds the
+responsive/RTL/theme/keyboard checks below. No cross-browser support claim is made.
+
+## Responsive rendering and accessibility (stage 7)
+
+The same coordinator remains mounted while the renderer changes. A finite numeric
+mobileBreakpoint (default 960) selects mobile strictly below the viewport width;
+exactly 960 is desktop. Zero disables mobile rendering. Invalid runtime values
+fall back to 960. The observer starts after mount and removes its resize listener
+on disposal; changing breakpoint re-evaluates against the current width.
+
+Both SSR and the first client render use the desktop shell. After mount a narrow
+client switches to mobile. This intentional layout shift avoids guessing a
+viewport on the server. A source-SFC SSR/jsdom hydration check verifies this shell
+transition without mismatch warnings; installed-package/browser hydration and
+support claims remain stage 8.
+
+Mobile renders a named semantic list of rows, selection checkboxes, reference
+summary fields, native readable details and an explicit keyboard-operable open-row
+button when rowClickable is enabled. Explicit mobile.summary columns sort by
+mobile.order; otherwise use schema order. mobileSummaryLimit defaults to 3.
+Remaining visible columns are details; compact=false, long values, copy/link and
+expandable-text use the reference full-width rules. Expandable text is fully
+readable on mobile. Custom mobile-summary/details receive the documented full
+row/key/columns/index/disabled context; a custom summary owns its selection UI.
+
+Selection, filters, sort and page survive viewport changes; resizing alone does
+not issue a provider request. Details open state survives desktop/mobile changes
+for rows on the current displayed page. It is pruned as rows leave that page and
+cleared if the row-key definition changes. Disabled rows/actions remain guarded,
+while native details can still be opened to read their content.
+
+Direction and palette are scoped to each table; they do not change the host page,
+language or Intl locale. Previous/next icons mirror in RTL; numeric page ranges
+and values use bidi isolation. Text is inherited and long values wrap; horizontal
+scrolling is intentional inside the desktop table region when columns need more
+width. Native dialog Tab boundaries/Escape/focus return, sort/select/page controls,
+row activation and mobile disclosure are covered by focused keyboard checks.
+Selected normal text palette pairs meet the project's 4.5:1 contrast target; the
+light muted token is #687672 to also meet it on the light tint. These checks are
+not an assistive-technology audit or a cross-browser support matrix.
+
+See [actual screenshots and visual approval scope](responsive-review.md).

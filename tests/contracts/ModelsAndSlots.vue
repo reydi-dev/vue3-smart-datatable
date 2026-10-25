@@ -34,6 +34,15 @@ function onRowClick(payload: RowClick<Order>) {
       >{{ row.name.toUpperCase() }} {{ rowIndex }}</template
     >
     <template #cell.name="{ row }">{{ row.amount.toFixed(2) }}</template>
+    <template #mobile-summary="{ row, rowKey, disabled }"
+      ><span :aria-disabled="disabled"
+        >{{ row.name.toUpperCase() }} {{ rowKey }}</span
+      ></template
+    >
+    <template #mobile-details="{ row, rowIndex, columns: detailColumns }"
+      >{{ row.amount.toFixed(2) }} {{ rowIndex }}
+      {{ detailColumns.length }}</template
+    >
   </SmartDataTable>
   <p>{{ lastName }}</p>
 </template>

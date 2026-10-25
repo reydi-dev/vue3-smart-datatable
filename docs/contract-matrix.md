@@ -202,3 +202,25 @@ compile fixtures.
 These checks cover the desktop cases in their listed scenarios, not all browser,
 assistive-technology, theme or responsive combinations. R01–R05/T05 and visual
 approval remain stage 7; packed-consumer/SSR/hydration X01 remains stage 8.
+
+## Stage 7 responsive evidence
+
+- responsive-table.test.ts adds four mounted scenarios for R03/R04/T05 and mobile
+  I/U cases: strict boundary/breakpoint changes, query/selection/details retention,
+  listener removal, summary ordering/limit/full-width details, complete mobile slot
+  contexts, guarded selection/actions/activation and source SSR/client-shell
+  compatibility. The hydration check uses SSR markup and jsdom; it does not claim
+  independent package/browser hydration coverage.
+- responsive.spec.ts adds two Chromium flows for R01–R05, T05 and keyboard/dialog
+  interactions: server state/request preservation across 375/960/1280 px changes,
+  filter/page/selection retention, details/Open row/actions with keyboard, disabled
+  reading, 320 px document overflow, scoped palettes/direction, mirrored navigation,
+  focus trapping/return and selected normal-text contrast pairs >= 4.5:1.
+- Actual desktop RTL and mobile light/dark screenshots are committed for maintainer
+  visual review. English/Persian content, full notes and an extra long unbroken DOM
+  text sample exercise wrapping. The extra DOM sample checks CSS only; the regular
+  screenshots show real component data before that mutation.
+
+Visual approval remains the maintainer's stage boundary. Screen-reader/browser
+matrix certification is not implied. Stage 8 still owns X01 installed package,
+SSR render and controlled browser hydration acceptance.

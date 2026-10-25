@@ -14,8 +14,8 @@ Individual commands: `format:check`, `lint`, `typecheck`, `test:components`,
 `test:unit`, `build`, `test:dist` (after build), and `build:demo`.
 
 `test:unit` runs pure core and adapter behavior tests in a Node environment;
-`test:components` runs mounted state/provider/persistence/export and desktop UI
-checks. `test:e2e` runs two Chromium flows against the actual playground. Install
+`test:components` runs mounted state/provider/persistence/export and desktop/mobile UI
+checks. `test:e2e` runs four Chromium flows against the actual playground. Install
 Chromium with `npx playwright install chromium` first; CI uses `--with-deps` on
 Ubuntu. An existing executable can be selected with
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. Browser checks are separate from

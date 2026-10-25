@@ -6,6 +6,8 @@ import SmartDataTable, {
 } from '../src'
 import { processLocalData } from '../src/core/local-data.js'
 import type {
+  Direction,
+  DataTableTheme,
   DataMode,
   DataProviderRequest,
   DataTableColumn,
@@ -30,8 +32,10 @@ interface Customer {
 const items: Customer[] = Array.from({ length: 64 }, (_, i) => ({
   id: i + 1,
   name:
-    ['Avery Chen', 'Jordan Patel', 'Morgan Silva', 'Riley Park'][i % 4] +
-    ` ${i + 1}`,
+    i === 63
+      ? 'مشتری نمونه — Riley Park 64'
+      : ['Avery Chen', 'Jordan Patel', 'Morgan Silva', 'Riley Park'][i % 4] +
+        ` ${i + 1}`,
   email: `customer${i + 1}@example.com`,
   amount: (i + 1) * 125.5,
   active: i % 3 !== 0,
@@ -112,6 +116,8 @@ const actions: RowAction<Customer>[] = [
     disabled: (r) => !r.active,
   },
 ]
+const direction = ref<Direction>('ltr'),
+  theme = ref<DataTableTheme>('light')
 const table = ref<SmartDataTableExpose>()
 const mode = ref<DataMode>('local'),
   selected = ref<readonly RowKey[]>([]),
@@ -155,6 +161,20 @@ async function provider(request: DataProviderRequest) {
           <option value="server">Server</option>
         </select></label
       >
+      <label
+        >Direction
+        <select v-model="direction">
+          <option value="ltr">LTR</option>
+          <option value="rtl">RTL</option>
+        </select></label
+      >
+      <label
+        >Theme
+        <select v-model="theme">
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select></label
+      >
       <label><input v-model="disabled" type="checkbox" /> Disable table</label>
       <label
         ><input v-model="failNext" type="checkbox" /> Fail next server
@@ -168,6 +188,8 @@ async function provider(request: DataProviderRequest) {
       v-model="selected"
       v-model:page="page"
       v-model:items-per-page="size"
+      :direction="direction"
+      :theme="theme"
       :columns="columns"
       :items="items"
       :mode="mode"
@@ -201,8 +223,8 @@ async function provider(request: DataProviderRequest) {
     </SmartDataTable>
     <p class="demo-feedback" role="status">{{ lastAction }}</p>
     <p class="demo-note">
-      Desktop preview · mobile renderer and responsive review follow in stage 7.
-      Not published to npm.
+      Responsive preview · resize to switch between desktop and mobile. Not
+      published to npm.
     </p>
   </main>
 </template>
@@ -274,5 +296,26 @@ body {
 .demo-feedback {
   font-size: 13px;
   color: #087c63;
+}
+</style>
+
+<style>
+@media (max-width: 600px) {
+  .demo {
+    padding: 0 12px;
+    margin: 24px auto;
+  }
+  .demo-header h1 {
+    font-size: 26px;
+  }
+  .demo-controls {
+    gap: 12px;
+  }
+  .demo-customer strong {
+    overflow-wrap: anywhere;
+  }
+  .demo-header p {
+    line-height: 1.6;
+  }
 }
 </style>

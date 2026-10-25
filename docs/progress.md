@@ -379,3 +379,80 @@ Review [stage 6 PR #19](https://github.com/reydi-dev/vue3-smart-datatable/pull/1
 and approve before merge.
 Stage 7 (#9) adds mobile rendering and reviews RTL, themes, responsive behavior,
 keyboard/accessibility and visual parity against the real table.
+
+## 2026-10-25 — Stage 6 merged; stage 7 responsive/accessibility review
+
+### Merge and tracking
+
+- User approved stage 6. Rechecked PR #19 head
+  `65ae6d9fd086b7cd80c3270bbb8287362ae4ba5e` and its successful full validate/
+  Chromium check before squash merging.
+- Merge commit: `def8ff4300d4f4229241f2e06e76f63bf6565e5b`.
+  Deleted the completed local/remote branch; issue #8 is closed.
+- Stage 7 is tracked by #9, marked in progress; branch:
+  `feat/responsive-accessibility`.
+
+### Implementation
+
+- Added the reference mobile list/summary/details renderer with generic cell,
+  action, row-actions and complete mobile-summary/details slot contexts. Explicit
+  summary/order/limit, full-width fields, readable expanded text, row classes,
+  selection and disabled/keyboard activation retain the accepted contracts.
+- Added internal useResponsiveLayout: numeric width < breakpoint (default 960),
+  exact-boundary desktop, mount-only viewport observation, live threshold updates
+  and listener cleanup. No breakpoint aliases or browser access at module load.
+- Kept one coordinator across layouts. Page/filter/sort/selection and current-page
+  open details survive resize; resize alone does not refetch. Detail keys are
+  pruned as rows leave the displayed page and cleared on row-key definition change.
+- Server and first client render both use the desktop shell, switching to mobile
+  only after mount. This intentionally permits a post-mount layout shift without
+  guessing a server viewport. Renderer-specific props/listeners do not leak onto
+  the other renderer's DOM root.
+- Shared row action predicates/order/menu/guarded triggers between renderers.
+  Added table naming and a usable sort-button hit area, preserved native mobile
+  disclosure reading when disabled, and isolated numeric ranges/chips/expanded
+  text for mixed-direction content.
+- Adapted reference mobile CSS without a framework/font/dependency. Direction and
+  palette remain table-scoped. Changed the light muted text token from #697773 to
+  #687672 so tested text on the light tint also meets the 4.5:1 contrast target.
+- Added development direction/theme controls and one mixed Persian/English record.
+  Committed real desktop/mobile screenshots and a visual-review page, keeping
+  these documentation artifacts outside the npm whitelist.
+
+### Actual validation
+
+- Full npm run validate passed: format, lint, actual-component positive/negative
+  contract types, 25 unit tests, 37 component tests, ESM/CSS/types build, 2
+  preliminary distribution checks and playground production build.
+- Subsequently rechecked strict types and lint after adding positive mobile slot
+  compile examples. No new runtime dependency or redundant core test was added.
+- Four new mounted scenarios verify responsive boundaries/state/details retention,
+  observer cleanup, mobile rules/contexts/guarded interactions and source SSR to
+  jsdom hydration. Narrow-viewport hydration begins with identical desktop markup,
+  then switches after mount without mismatch warnings. This is source/jsdom
+  evidence; independent installed-package/browser SSR/hydration remains stage 8.
+- All four actual Chromium E2E flows passed locally. Two added flows verify mobile
+  server/filter/page/selection preservation across resize, no resize-only provider
+  calls, keyboard details/Open row/actions, disabled reading, dialog Tab/Escape/
+  focus return, scoped light/dark/RTL, mirrored navigation, selected palette
+  contrasts >=4.5:1 and document overflow guards at 320/375 px.
+- The screenshot/contrast flow passed again after changing its desktop capture to
+  1440 px so all optional columns fit the review image. It also checks long plain
+  DOM text wrapping; this extra sample is CSS evidence and is inserted after the
+  regular screenshots, which contain actual component data.
+- Inspected the three committed screenshots in docs/screenshots. Mobile captures
+  are crops of a real first row with details open at 375 px; desktop is the real
+  1440 px page. See [visual review](responsive-review.md) for context and scope.
+- Local browser remains existing Chromium 140.0.7339.16 on macOS 13 via
+  PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH. CI installs matching Playwright Chromium on
+  Ubuntu and runs all four flows after clean npm ci/validate; final-head CI
+  evidence is linked in the implementation PR.
+- Keyboard/contrast/scoped-style checks are focused evidence, not a screen-reader
+  audit or second-browser support claim. No Firefox/WebKit claim is introduced.
+- Package stays private 0.0.0. No npm publication, public Release/tag or demo deploy.
+
+### Next action
+
+Review the stage 7 PR linked from #9 and the committed visual examples. Obtain
+maintainer visual/stage approval before merge. Stage 8 (#10) verifies independent
+packed consumers, declarations/CSS/exports and minimal SSR/browser hydration.

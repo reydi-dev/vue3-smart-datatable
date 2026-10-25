@@ -22,9 +22,9 @@
         "
       />
     </template>
-    <span v-else-if="column.type === 'chip'" class="sdt-cell__chip">{{
-      formattedText
-    }}</span>
+    <span v-else-if="column.type === 'chip'" class="sdt-cell__chip"
+      ><bdi>{{ formattedText }}</bdi></span
+    >
     <SmartTableIcon
       v-else-if="column.type === 'icon'"
       :icon="displayIcon"
@@ -80,9 +80,9 @@
           :size="16"
         />
       </button>
-      <span :class="{ 'sdt-cell__preview': !mobile && !expanded }">{{
-        formattedText
-      }}</span>
+      <span :class="{ 'sdt-cell__preview': !mobile && !expanded }"
+        ><bdi>{{ formattedText }}</bdi></span
+      >
     </div>
     <bdi v-else>{{ formattedText }}</bdi>
   </div>
