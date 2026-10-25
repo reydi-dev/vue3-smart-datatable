@@ -19,4 +19,8 @@
 - Add lazy, resilient localStorage persistence and root adapter/type exports.
 - Run meaningful core/adapter behavior checks in CI.
 
+- Implement internal controlled/uncontrolled state and coalesced provider requests.
+- Protect cancellation, retry, async persistence ordering and fixed-query exports.
+- Add mounted lifecycle/race fixtures and a synthetic state playground probe.
+
 No table component implementation or npm release is available yet.

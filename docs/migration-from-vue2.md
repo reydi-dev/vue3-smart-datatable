@@ -79,5 +79,6 @@ run at a time. Storage remains optional with version-1 visibility state; stale
 async restores no longer overwrite newer parent/user intent.
 
 The stage 3 contract was approved before the core port. Stage 4 implements pure
-helpers and adapters; reactive lifecycle and component differences remain pending.
+helpers/adapters and stage 5 implements the internal reactive lifecycle. Public
+component/UI integration remains pending.
 The [matrix](contract-matrix.md) records the implementation/verification boundary.

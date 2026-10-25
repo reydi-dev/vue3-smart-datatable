@@ -1,8 +1,9 @@
 # Vue 3 API contracts
 
 **Stage 3 contract approved; full table implementation pending.** Stage 4 adds pure
-core helpers and CSV/storage adapters. The package remains private, the playground
-is a build probe, and `SmartDataTable` is not exported as a working component yet.
+core helpers and CSV/storage adapters; stage 5 adds internal reactive coordination.
+The package remains private. Playground fixtures are development probes, and
+`SmartDataTable` is not exported as a working component yet.
 
 This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
@@ -298,7 +299,8 @@ See the official [script setup reference](https://vuejs.org/api/sfc-script-setup
 The root now exports `createCsvExporter`, `CsvExporterOptions`,
 `createLocalStoragePersistenceAdapter`, and `LocalStoragePersistenceOptions`.
 No adapter subpaths are defined. They are implemented independently of the table;
-provider lifecycle and model/export coordination remain stage 5.
+stage 5 coordinates them through internal composables. The public table SFC and
+its UI integration remain stage 6.
 
 CSV all-scope export requires each fetched page to honor pageSize and report the
 same total as the starting query. A short/oversized page or changed total rejects
@@ -312,10 +314,50 @@ getItem/setItem/removeItem storage object. The adapter accesses window.localStor
 only inside method calls and catches blocked getters, corrupt JSON, invalid
 version/key arrays, read/quota/remove failures. Loads return fresh deduplicated
 string-key containers. Async restore precedence and save ordering belong to the
-future state composable, not this synchronous-storage wrapper.
+stage 5 state composables, not this synchronous-storage wrapper.
 
 Pure local filtering retains the reference treatment of incomplete between
 clauses: keep them in provider filters but do not filter locally until both bounds
 exist. Numeric missing values no longer match zero through Number(null). Nullish
 and invalid sort values sort last stably in either direction. Core helpers are
 internal, with no root exports or Vue/DOM imports.
+
+## Reactive coordination implemented in stage 5
+
+The internal useDataTable coordinator implements the model/query lifecycle above
+and exposes the six-method object for the future public SFC. Its four responsibility
+groups are models/local state, provider work, column persistence, and export.
+They are not root/headless exports. StateHarness tests mount the real composables;
+ContractProbe remains a compile-only signature fixture, and the public table UI
+is still unimplemented.
+
+Accepted query changes invalidate pending work immediately and coalesce after
+Vue's parent/component update flush. An idle filter debounce contributes to
+getState().loading, while loading-change describes actual provider work; replacement
+requests keep a continuous loading interval. Context changes are detected by
+identity, not deep in-place mutation. Request/event containers are copied so a
+provider modifying its received page cannot alter the accepted table state.
+
+Only accepted visibility interactions and resets persist columns. External parent
+models synchronize without interaction events or implicit storage writes. Restores
+wait for this coordinator's earlier writes to the same adapter/key, reject stale
+intent/key/version results, and never emit a user interaction. Pending saves are
+ordered per adapter/key; optional failures do not become data errors. Unmount
+prevents new queued work and stale state commits, but cannot undo an opaque
+adapter operation already started by consumer code.
+
+Export captures the accepted query, visible/schema column containers, local items,
+provider, normalizer and row-key definition. Changing live filters or visibility
+does not change that export. Mode/provider/normalizer/context replacement or
+unmount aborts it. Concurrent work, pending/failed data and server data belonging
+to an older accepted query are rejected before export-start. With autoLoad=false,
+last successful rows can remain displayed after model changes, but export remains
+blocked until refresh accepts the current query. Custom providers/exporters must
+honor signal to stop their own external side effects; ignoring it still cannot
+commit stale library state or late lifecycle success/error events.
+
+The development playground adds a synthetic local/server state fixture with recent
+event names. It is neither the final table demo nor npm output. Mounted tests verify
+controlled/uncontrolled handoff, coalescing, cancellation, retry, rejected page
+correction, persistence races and export snapshots. Semantic renderer, slot/row
+interaction, browser, packed-consumer and SSR hydration acceptance remain later.

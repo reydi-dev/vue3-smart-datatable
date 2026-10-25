@@ -156,3 +156,25 @@ These checks do not complete M01–M05, provider request scheduling, lifecycle e
 ordering, keyboard/UI rendering, reactive persistence/export coordination, or X01
 packed consumer/SSR hydration verification. The built-root Node import check is a
 preliminary distribution check, not a full SSR-support claim.
+
+## Stage 5 evidence
+
+The mounted tests/components/StateHarness.vue connects the actual internal
+composables to Vue props/emits. Its internal methods are exposed for testing;
+this is not the public table SFC or completed renderers.
+
+- reactive-state.test.ts verifies M01–M05 ownership/handoff, accepted query/event
+  ordering and coalescing, no parent echoes, S02 selection across pages, P01/P02
+  response/error/retry and ignored-abort races, P03 manual/disabled/autoLoad
+  behavior, P04 source replacement and disposal, page correction refusal, and
+  isolation of consumer request mutation from accepted state.
+- persistence-export.test.ts verifies reactive V01 schema changes and V03 late
+  restore/intent/key races, serialized writes/read ordering, optional failures,
+  reset precedence and disposal; E01 fixed-query export with live table changes,
+  E02 abort/concurrency/progress/disposal and pending/stale data guards.
+- query.test.ts verifies structural watch snapshots and local select-value identity.
+
+Source-level defaults and transition logic are now implemented; integration with
+the future SmartDataTable SFC must reuse these contracts. U/I/T/R cases requiring
+real controls, dynamic slots, row-click/keyboard events, responsive rendering and
+visual review are still stages 6–7. X01 tarball/SSR/hydration remains stage 8.

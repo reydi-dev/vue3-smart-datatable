@@ -50,7 +50,8 @@ Future folders are introduced when they contain real code, not empty scaffolds.
 
 ## Validation policy
 
-The current checks cover the pipeline SFC, declared package outputs, external Vue,
+The current checks cover mounted state/provider/persistence/export fixtures,
+the pipeline SFC, declared package outputs, external Vue,
 formatting, lint, strict types, library build, and demo build. CI runs these checks
 on PRs and main using `npm ci`. The distribution check is a preliminary output
 check, not the independently installed consumer verification planned in stage 8.
@@ -108,5 +109,36 @@ CSV stays an in-memory adapter with a finite default cap, cancellation checkpoin
 strict complete-page checks, and injected download for non-browser runtimes.
 The storage wrapper resolves browser globals lazily and catches optional-storage
 failures. Reactive restore precedence, serial saves, query snapshots, request race
-handling and export lifecycle events remain the composable responsibilities in
-stage 5. No browser listeners/timers are introduced in this stage.
+handling and export lifecycle events are implemented in stage 5 composables. No browser listeners/timers are introduced in this stage.
+
+## Stage 5 state and async coordination
+
+- useDataTable owns optional model state, normalized schema/local results, public
+  ref-method orchestration, selection and visibility transactions. Controlled
+  props are read directly; an internal value is only authoritative when undefined.
+- useDataSource owns server rows/total/error/pending, request identity/controllers,
+  debounce, lifecycle events and current-data status. A synchronous watcher
+  invalidates work; a post-flush watcher coalesces accepted queries. This avoids
+  network calls for intermediate parent model updates and suppresses parent echoes.
+- useColumnPersistence handles mount/key restore and serialized per-adapter/key
+  writes. It guards against newer user/model intent, waits behind older writes
+  before restoring a key, and skips queued work after disposal.
+- useTableExport captures an accepted input snapshot and owns the separate export
+  controller/progress lifecycle. It does not write live page/query state.
+
+A small lifecycle helper settles aborted awaits even when consumer work ignores
+signal, with listeners removed on completion or abort. Request IDs independently
+protect data commits. The pure query helper compares structural query snapshots
+(including dates and repeated values) while copying local select filter containers
+without changing the identity of opaque selected business values.
+
+All composables are internal. The source root still exports adapters/types and
+PipelineProbe only. The StateHarness SFC tests the actual generic composable
+signatures with Vue props/emits, with autoLoad=true explicitly defaulted; future
+SmartDataTable must likewise default boolean options without defaulting the six
+optional model props. No DOM observer or UI renderer is added in this stage.
+
+Playground StateProbe provides synthetic local/server interactions and recent
+lifecycle event names. Tests run in jsdom with controlled promises and fake timers;
+this is not browser compatibility or full SSR evidence. The dependency lockfile
+and runtime dependency policy are unchanged.
