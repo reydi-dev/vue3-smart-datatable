@@ -154,7 +154,12 @@ renamed PR head and available checks.
   intentional negative-template verification, the existing 1 component check,
   ESM/CSS/declaration build, the existing 1 distribution-output check, and demo
   build. No redundant browser or unimplemented unit suite was run.
-- PR/CI evidence will be linked from issue #5 and recorded below.
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/16, linked to #5.
+- [CI run 40214562578](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40214562578)
+  passed for implementation commit `b3c3e3d09e08c84bc21e1fbeae0e8e617e03bb9e`,
+  including clean lockfile installation and all current checks.
+- Confirmed remote branches are only `main` and `feat/public-contracts`; neither
+  includes the prohibited word. This follow-up records results only.
 - No table runtime, adapter, provider lifecycle, or keyboard interaction is
   implemented or claimed passing by the type fixtures. Their matrix checks are
   explicitly planned for the later implementation stages.
