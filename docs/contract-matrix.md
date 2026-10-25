@@ -178,3 +178,27 @@ Source-level defaults and transition logic are now implemented; integration with
 the future SmartDataTable SFC must reuse these contracts. U/I/T/R cases requiring
 real controls, dynamic slots, row-click/keyboard events, responsive rendering and
 visual review are still stages 6–7. X01 tarball/SSR/hydration remains stage 8.
+
+## Stage 6 desktop evidence
+
+The actual SmartDataTable SFC replaces all pipeline/signature probes. Positive
+and expected-negative template fixtures compile this SFC, including six models,
+generic slot rows and canonical emits. No runtime behavior is inferred from the
+compile fixtures.
+
+- desktop-table.test.ts adds eight mounted integration scenarios covering U01–U08,
+  desktop C02–C09, I01/I02 and T01–T04: actual defaults/model proposals, typed keys,
+  paging/localized validation, text/number/range/select filter controls, safe cell
+  rendering and clipboard, ordinary/interactive/keyboard/disabled event paths,
+  slot priority and dynamic replacement, custom filter/action/row-action slots,
+  column dialog/ref methods, provider state priority/retry and export UI feedback.
+- desktop.spec.ts adds two Chromium flows for real local/server interactions:
+  selection across pages, sorting/filter reset, native dialog focus/Escape, row
+  keyboard activation, actual CSV download, loading navigation guards,
+  failure/retry, debounced filters, size changes and disabled controls.
+- Original tokens and native desktop table structure are retained. SVG object
+  icons and URL allowlists are used; neither fonts nor raw HTML are introduced.
+
+These checks cover the desktop cases in their listed scenarios, not all browser,
+assistive-technology, theme or responsive combinations. R01–R05/T05 and visual
+approval remain stage 7; packed-consumer/SSR/hydration X01 remains stage 8.

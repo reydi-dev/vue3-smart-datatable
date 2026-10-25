@@ -23,4 +23,9 @@
 - Protect cancellation, retry, async persistence ordering and fixed-query exports.
 - Add mounted lifecycle/race fixtures and a synthetic state playground probe.
 
-No table component implementation or npm release is available yet.
+- Export the real generic desktop SmartDataTable as default and named component.
+- Port the reference Clarity UI, all cell types, controls, actions and typed slots.
+- Replace temporary probes with actual local/server development examples.
+- Add mounted UI checks and Chromium local/server flows to PR CI.
+
+The package remains private. Mobile/release validation and npm publication are pending.

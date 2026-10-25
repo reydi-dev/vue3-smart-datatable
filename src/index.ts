@@ -1,5 +1,7 @@
-// Temporary pipeline probe. This is not the table's public API.
-export { default as PipelineProbe } from './components/PipelineProbe.vue'
+export {
+  default,
+  default as SmartDataTable,
+} from './components/SmartDataTable.vue'
 export type * from './types/index.js'
 export { createCsvExporter } from './adapters/exporters/csv.js'
 export type { CsvExporterOptions } from './adapters/exporters/csv.js'

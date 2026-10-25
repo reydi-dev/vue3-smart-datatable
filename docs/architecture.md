@@ -12,10 +12,10 @@ in a separate step. Vue is a peer dependency and external to the library bundle.
 No CommonJS output is provided without a concrete consumer need. Only `dist`,
 README, changelog, license, and npm-required metadata are packed.
 
-The temporary `PipelineProbe` verifies SFC compilation, reactive mounting, ESM,
-declarations, and CSS output. It must be removed when the real component replaces
-it. Its export is not an accepted table API. Root CSV/storage adapter factories are implemented in stage 4; no adapter
-subpaths exist.
+Stage 6 replaces PipelineProbe with the real generic SmartDataTable component
+(default and named export). Root CSV/storage factories are implemented; no adapter
+subpaths exist. The temporary probe components and their placeholder mount test
+have been removed.
 
 The playground has its own Vite config and `dist-demo` output. It is excluded from
 the package and is not deployed by CI. No router, store, HTTP client, UI framework,
@@ -51,23 +51,23 @@ Future folders are introduced when they contain real code, not empty scaffolds.
 ## Validation policy
 
 The current checks cover mounted state/provider/persistence/export fixtures,
-the pipeline SFC, declared package outputs, external Vue,
+the real desktop SFC, declared package outputs, external Vue,
 formatting, lint, strict types, library build, and demo build. CI runs these checks
 on PRs and main using `npm ci`. The distribution check is a preliminary output
 check, not the independently installed consumer verification planned in stage 8.
 
 Unit tests for pure core/adapters are implemented and run in CI from stage 4.
-The E2E command still fails on missing tests and is intentionally not included in
-CI until the real UI exists. No `passWithNoTests`, placeholder assertions, or fake coverage target is
-used. Playwright Chromium is configured but no browser support claim is made.
+CI also installs Playwright Chromium on Ubuntu and executes two real local/server
+E2E flows. Browser installation/test commands remain separate from validate.
+No placeholder assertions or coverage target is used. Browser verification is
+limited to the environments recorded in progress; a support matrix remains later.
 
 ## Stage 3 accepted public contract
 
 Public contracts live in `src/types/index.ts` without a Vue or browser runtime
 import. They adapt the pinned MIT-licensed reference, retain all 12 cell kinds,
 and use Row extends object with unknown cell/provider values. The root exports
-types now, not a pretend working SmartDataTable component. CSV/storage factories are implemented from stage 4; the component/default export
-waits for its real implementation.
+types, CSV/storage factories, and the stage 6 desktop component/default export.
 
 Six optional model props use undefined to select uncontrolled ownership; defined
 values are parent-authoritative. Use explicit generic props/emits/slots instead
@@ -80,13 +80,13 @@ The accepted contract and intentional behavioral differences are in
 [migration](migration-from-vue2.md). Stage 3 approval established the acceptance boundary before core/provider/UI
 work began.
 
-Compile-only Vue fixtures exercise the same exported type interfaces through a
-non-product generic ContractProbe. Positive examples include six v-models,
+Compile-only Vue fixtures now exercise the actual generic SmartDataTable SFC;
+the temporary ContractProbe signature fixture has been removed. Positive examples include six v-models,
 formatters, slots and row events. A separate vue-tsc run must reject exactly the
 intentionally invalid page and missing generic slot property; TypeScript
 @ts-expect-error cases additionally cover bad row/provider/model/breakpoint/ref
 usage. These checks run as part of typecheck in CI and are not runtime behavior
-tests. Actual component props/emits/slots must reuse these contracts later.
+tests. Actual component props/emits/slots reuse these interfaces.
 
 Added eslint-config-prettier to turn off formatting rules that conflict with
 Prettier. The valid-v-slot rule permits dotted slot names used by the retained
@@ -132,13 +132,37 @@ protect data commits. The pure query helper compares structural query snapshots
 (including dates and repeated values) while copying local select filter containers
 without changing the identity of opaque selected business values.
 
-All composables are internal. The source root still exports adapters/types and
-PipelineProbe only. The StateHarness SFC tests the actual generic composable
-signatures with Vue props/emits, with autoLoad=true explicitly defaulted; future
-SmartDataTable must likewise default boolean options without defaulting the six
-optional model props. No DOM observer or UI renderer is added in this stage.
+All composables are internal. The StateHarness SFC tests their generic signatures
+with Vue props/emits. SmartDataTable reuses the same props/emits contracts, defaults
+enabled boolean options and leaves all six model props undefined when omitted.
 
-Playground StateProbe provides synthetic local/server interactions and recent
-lifecycle event names. Tests run in jsdom with controlled promises and fake timers;
-this is not browser compatibility or full SSR evidence. The dependency lockfile
-and runtime dependency policy are unchanged.
+State tests run in jsdom with controlled promises and fake timers; this is not
+browser compatibility or full SSR evidence. Stage 6 replaces the temporary
+StateProbe playground with the actual table. The dependency lockfile and runtime
+dependency policy are unchanged.
+
+## Stage 6 desktop UI
+
+The public SFC wires props, named slot forwarding and canonical events to
+useDataTable. Rendering and browser controls live under components; DOM event
+helpers live alongside them, so core remains independent of Vue and DOM access.
+There is no sorting/filtering/provider pipeline embedded in a renderer.
+
+Reference Clarity CSS is adapted as plain CSS under the existing sdt namespace,
+with original tokens, inherited font, independent palettes and no framework/font
+or Sass dependency. The SFC includes styles for Vite extraction; the TypeScript
+entry never imports a source CSS path. Mobile renderer styles will arrive with
+stage 7 rather than claiming an unwritten renderer.
+
+Desktop, filters, pagination, cells, SVG icons, actions, export disclosure and
+native column dialog are separate generic setup components. Dialog/document
+listeners are installed on mount and removed on disposal. Export/copy feedback
+ignores disposed component work. Vue useId generates per-instance pagination
+error associations without module-level browser access or counters.
+
+Dynamic specific slots are detected during render, avoiding a cached $slots
+presence check that would miss conditional parent changes. UI integration tests
+exercise these paths and the actual default booleans, model proposals, exact
+payloads and public ref surface. The browser suite covers local/server controls,
+error/retry, keyboard/dialog focus and a real CSV download. Stage 8 still owns
+independent packed-consumer and SSR hydration validation.

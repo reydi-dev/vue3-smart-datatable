@@ -1,9 +1,9 @@
 # Vue 3 API contracts
 
-**Stage 3 contract approved; full table implementation pending.** Stage 4 adds pure
-core helpers and CSV/storage adapters; stage 5 adds internal reactive coordination.
-The package remains private. Playground fixtures are development probes, and
-`SmartDataTable` is not exported as a working component yet.
+**Desktop table implemented; package still private and unpublished.** The root
+exports the generic `SmartDataTable` as both default and named component, types,
+and CSV/storage factories. Desktop controls use the stage 5 composables. Mobile
+rendering and stage 7–8 accessibility/distribution/SSR verification remain pending.
 
 This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
@@ -12,7 +12,7 @@ The source of type signatures is `src/types/index.ts`.
 
 ## Component and models
 
-The intended component will be a generic `<script setup lang="ts">` SFC, with
+The component is a generic `<script setup lang="ts">` SFC, with
 `Row extends object`. A normal interface such as `interface Order { id: number;
 name: string }` needs no index signature. Columns, formatters, row getters,
 actions, slot rows and event payloads retain this same Row. Cell values and raw
@@ -280,12 +280,11 @@ ordering; a changing dataset cannot be guaranteed to provide a transactional sna
 
 ## Verification status
 
-Compile-only fixtures in tests/contracts use the actual exported types through a
-non-product ContractProbe SFC. They exercise six models, generic formatters and
-slots, event payloads, and rejected incompatible types. They prove signatures,
-not provider lifecycle, real rendering, runtime ownership, keyboard behavior, SSR,
-or packed consumer support. Acceptance IDs in the matrix are planned runtime
-checks for stages 4–8; none is claimed passed by this contract PR.
+Compile-only fixtures in tests/contracts now use the actual exported generic
+SmartDataTable SFC. They exercise six models, formatters/slots, event payloads and
+rejected incompatible types. They prove signatures; mounted and browser checks
+provide separate desktop runtime evidence in the matrix. Packed-consumer, mobile
+and SSR/hydration acceptance remain stages 7–8.
 
 The selected supported baseline stays Vue 3.5.44, TypeScript 5.9.3 and vue-tsc
 3.3.13. Generic SFCs, defineSlots and tuple emits are available from Vue 3.3; this
@@ -299,8 +298,8 @@ See the official [script setup reference](https://vuejs.org/api/sfc-script-setup
 The root now exports `createCsvExporter`, `CsvExporterOptions`,
 `createLocalStoragePersistenceAdapter`, and `LocalStoragePersistenceOptions`.
 No adapter subpaths are defined. They are implemented independently of the table;
-stage 5 coordinates them through internal composables. The public table SFC and
-its UI integration remain stage 6.
+stage 5 coordinates them through internal composables, and stage 6 connects the
+public desktop SFC and its controls.
 
 CSV all-scope export requires each fetched page to honor pageSize and report the
 same total as the starting query. A short/oversized page or changed total rejects
@@ -325,11 +324,10 @@ internal, with no root exports or Vue/DOM imports.
 ## Reactive coordination implemented in stage 5
 
 The internal useDataTable coordinator implements the model/query lifecycle above
-and exposes the six-method object for the future public SFC. Its four responsibility
+and supplies the six-method object exposed by the public SFC. Its four responsibility
 groups are models/local state, provider work, column persistence, and export.
 They are not root/headless exports. StateHarness tests mount the real composables;
-ContractProbe remains a compile-only signature fixture, and the public table UI
-is still unimplemented.
+positive/negative template fixtures now compile the actual SmartDataTable SFC.
 
 Accepted query changes invalidate pending work immediately and coalesce after
 Vue's parent/component update flush. An idle filter debounce contributes to
@@ -356,8 +354,47 @@ blocked until refresh accepts the current query. Custom providers/exporters must
 honor signal to stop their own external side effects; ignoring it still cannot
 commit stale library state or late lifecycle success/error events.
 
-The development playground adds a synthetic local/server state fixture with recent
-event names. It is neither the final table demo nor npm output. Mounted tests verify
-controlled/uncontrolled handoff, coalescing, cancellation, retry, rejected page
-correction, persistence races and export snapshots. Semantic renderer, slot/row
-interaction, browser, packed-consumer and SSR hydration acceptance remain later.
+Mounted state fixtures verify controlled/uncontrolled handoff, coalescing,
+cancellation, retry, rejected page correction, persistence races and export
+snapshots. The desktop playground now uses the actual table, simulated provider,
+column persistence and CSV download. It remains a development example; the
+release documentation/demo, mobile rendering and packed-consumer/SSR acceptance
+remain later stages.
+
+## Desktop presentation implemented in stage 6
+
+SmartDataTable declares all canonical emits and exposes exactly the six methods
+above. Absent model props remain undefined, while enabled-by-default boolean
+controls are explicitly defaulted. Component and default exports reference the
+same SFC. Import the separate `/styles.css` export in an eventual package consumer;
+source SFC development already includes these styles.
+
+SmartTableDesktop renders a semantic table with scoped headers, sort buttons,
+selection, row keyboard activation, constrained scrolling and fixed headers.
+Native click listeners fall through to the root once. Built-in ordinary cells
+emit cell-click; enabled rows can also emit row-click once. Controls/actions/links
+own their clicks. Custom cell slots own their interaction events and must respect
+the documented disabled contract.
+
+Specific header/cell slots win over generic slots, including when conditional
+slots change after mount. Filter slots receive the accepted clause, guarded
+setClause/clear functions and disabled state. Action slots receive current visible
+row/action context and a guarded trigger; row-actions replaces the whole region.
+Leading actions precede trailing/default actions; menu actions use a native
+readable disclosure with ordinary focusable buttons, not an ARIA menu widget.
+
+All twelve cell kinds render safe text by default. SVG definitions render as
+attributes, without fonts, HTML injection or string aliases. Links/images use the
+core URL allowlist. Copy feedback follows a successful clipboard write only;
+clipboard permission failures are caught. The columns dialog uses native modality,
+Escape, a Tab boundary and trigger focus return; choices retain mandatory columns.
+
+Toolbar/footer/loading/empty/error/progress slots replace their respective default
+regions. The built-in empty state distinguishes active-filter no-results and
+provides reset. Pagination disables during loading/error/disabled states, validates
+localized page input and positive sizes. Export menu failures show the localized
+exportFailed message while programmatic exportData still rejects for callers.
+
+Light is the default palette, with no ancestor theme bridge. Full dark/RTL/mobile
+review and accessibility acceptance belong to stage 7; no SSR hydration or
+cross-browser support claim is made by this stage.
