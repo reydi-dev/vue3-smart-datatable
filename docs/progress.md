@@ -375,6 +375,7 @@ contracts and composables to the actual semantic desktop table and reference UI.
 
 ### Next action
 
-Review the stage 6 implementation PR linked from #8 and approve before merge.
+Review [stage 6 PR #19](https://github.com/reydi-dev/vue3-smart-datatable/pull/19)
+and approve before merge.
 Stage 7 (#9) adds mobile rendering and reviews RTL, themes, responsive behavior,
 keyboard/accessibility and visual parity against the real table.
