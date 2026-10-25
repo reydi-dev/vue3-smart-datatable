@@ -101,3 +101,17 @@ no configured checks, and squash-merged as
 
 Obtain user approval for the stage 2 PR after CI passes. Then recheck its head,
 squash merge, close #4, and start the public-contract/parity work in #5.
+
+### Stage 2 approval and branch naming correction
+
+The user approved stage 2 subject to removing `codex` from branch names.
+Renamed the local and GitHub working branch to
+`chore/tooling-and-project-tracking`, and updated AGENTS, CONTRIBUTING, and the
+implementation plan. All future branch names must omit that word. Historical
+branch names above describe completed work only. The originally verbatim plan
+is now intentionally amended by this explicit user instruction.
+
+The approved implementation head `6046bd23861299e011bb32abba3883220c88222a`
+also passed [CI run 40212954156](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40212954156).
+The naming correction changes documentation only; merge follows a check of the
+renamed PR head and available checks.

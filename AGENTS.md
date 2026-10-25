@@ -11,7 +11,8 @@
   clean up timers, listeners, and requests.
 - Never change the separate Vue 2 repository. Read the pinned reference with
   Git object commands; retain its MIT copyright notice when adapting code.
-- Develop on `codex/` branches and submit PRs to `main`. The minimal bootstrap
+- Use descriptive `feat/`, `fix/`, `chore/`, `docs/`, `test/`, or `ci/` branch names.
+  Never include `codex` anywhere in a branch name. Submit PRs to `main`. The minimal bootstrap
   commit is the only direct-main exception. Obtain stage approval before merge;
   prefer squash merge and delete the working branch afterward.
 - npm publication, public releases, and demo deployment require explicit user

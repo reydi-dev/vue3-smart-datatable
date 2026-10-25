@@ -2,7 +2,8 @@
 
 This library is in development and has no published Vue 3 release yet.
 
-Use a `codex/` branch and open a pull request against `main`. Keep changes focused
+Use a descriptive branch such as `feat/public-contracts` or `chore/tooling`.
+Never include `codex` in branch names. Open a pull request against `main`. Keep changes focused
 on the current implementation stage. Stage results need maintainer approval
 before merge; package publication, public releases, and demo deployment need
 explicit approval at their release stages.
