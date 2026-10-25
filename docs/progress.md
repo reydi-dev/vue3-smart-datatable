@@ -220,7 +220,11 @@ checks were verified before merging; details follow in the stage 4 entry.
 - Real table/provider lifecycle, reactive models, storage races, keyboard/mobile
   interaction, independently installed tarball, and SSR hydration remain later
   stages. E2E was not run because there is no actual UI suite yet.
-- PR and remote CI evidence will be recorded after opening the stage 4 PR.
+- PR: https://github.com/reydi-dev/vue3-smart-datatable/pull/17 (awaiting stage approval).
+- [CI run 40217339581](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40217339581)
+  passed on implementation commit `465c9dd71ece93044b79ce1d08f58cdf0d71d866`,
+  including clean `npm ci` and the full current validate command on Ubuntu.
+  This follow-up records results only; executable files are unchanged.
 - Package remains private; no npm release, tag, GitHub Release or demo deployment.
 
 ### Next action
