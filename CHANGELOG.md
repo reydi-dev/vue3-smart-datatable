@@ -10,4 +10,8 @@
 - Configure strict Vue 3/TypeScript tooling, ESM/CSS/declaration builds, and PR CI.
 - Add a temporary reactive pipeline probe and focused packaging checks.
 
+- Define proposed generic Vue 3 models, events, slots, provider and ref contracts.
+- Document the reference parity matrix and intentional migration differences.
+- Verify positive and intentionally invalid TypeScript/template examples.
+
 No table implementation or npm release is available yet.

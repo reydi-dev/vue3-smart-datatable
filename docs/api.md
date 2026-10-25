@@ -1,0 +1,294 @@
+# Proposed Vue 3 API
+
+**Stage 3 contract for review, not a ready runtime API.** Only the types and
+compile-time examples exist. The package is private, the playground is a build
+probe, and `SmartDataTable` is not exported as a working component yet.
+
+This proposal is based on Vue 2 `v0.3.1`, commit
+`3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
+See [parity matrix](contract-matrix.md) for every retained or changed surface.
+The source of type signatures is `src/types/index.ts`.
+
+## Component and models
+
+The intended component will be a generic `<script setup lang="ts">` SFC, with
+`Row extends object`. A normal interface such as `interface Order { id: number;
+name: string }` needs no index signature. Columns, formatters, row getters,
+actions, slot rows and event payloads retain this same Row. Cell values and raw
+provider responses are unknown until consumer formatting/normalization narrows
+them. Composables and renderer internals are not public exports.
+
+| Template model            | Prop             | Exact TypeScript emit   | Default when undefined                    |
+| ------------------------- | ---------------- | ----------------------- | ----------------------------------------- |
+| `v-model`                 | `modelValue`     | `update:modelValue`     | `[]`                                      |
+| `v-model:page`            | `page`           | `update:page`           | `1`                                       |
+| `v-model:items-per-page`  | `itemsPerPage`   | `update:itemsPerPage`   | `25`                                      |
+| `v-model:sort`            | `sort`           | `update:sort`           | `null`                                    |
+| `v-model:filters`         | `filters`        | `update:filters`        | `{}`                                      |
+| `v-model:visible-columns` | `visibleColumns` | `update:visibleColumns` | non-hidden columns plus mandatory columns |
+
+Templates can listen with `@update:items-per-page` and
+`@update:visible-columns`; the canonical script event names use camelCase after
+`update:`. Do not emit two aliases for the same update.
+
+### Ownership and synchronization
+
+Each state is independently controlled when its prop is **not undefined**.
+Explicit `[]`, `{}`, `1`, and `sort=null` are controlled values. Omitting a prop
+or passing undefined selects internal state. No `withDefaults` or `defineModel`
+default may erase this distinction.
+
+Controlled state reads the parent's value as its authority; an interaction emits
+a proposed update, and does not keep a second optimistic copy. A parent using a
+one-way prop must accept updates to enable interaction. Uncontrolled state writes
+to its own single internal value. Both modes emit updates for effective user/ref
+changes. Equivalent assignments are no-ops. Inputs are never mutated.
+
+Switching from uncontrolled to controlled uses the supplied value immediately.
+Switching back to undefined retains the last effective controlled value. Removing
+columns still normalizes visibility and sort against the remaining schema.
+
+For a built-in filter, sort or page-size transaction:
+
+1. Propose the primary model update, then `update:page(1)` if page differs.
+2. Commit uncontrolled state and let synchronous parent model handlers settle.
+3. After Vue's update flush, emit one `options-change` describing the **accepted**
+   effective query, if it changed. Never fetch the abandoned intermediate query.
+4. Schedule at most one provider request. Only filters use `filterDebounce`.
+
+Direct parent changes do not echo `update:*` events. They do update accepted query
+state and can emit one aggregate `options-change` and load. A parent's batched
+filter/page assignment is authoritative: no watcher resets the explicitly supplied
+page again. Parents that change filters/sort/size directly must set page explicitly
+when they want a reset. A rejected controlled proposal emits no aggregate change
+or request for the rejected value. Deep equality is structural for query models;
+providerContext identity/replacement is the supported reload trigger.
+
+Selection/visibility changes emit their matching model event, followed after the
+flush by one `selection-change` / `column-visibility-change` if the accepted value
+changed. They do not reload data or emit `options-change`. Selection payload rows
+come from the displayed page only. No model/change event fires just for defaults
+on mount or an equivalent parent echo. New parent selection/visibility values
+synchronize without interaction change events.
+
+### Defaults and other props
+
+| Props                                    | Default and meaning                                                                                |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `columns`                                | Required; unique nonempty column keys. No mutation of schema.                                      |
+| `mode`, `items`                          | `local`, `[]`; local filter → stable single sort → page.                                           |
+| `dataProvider`, `normalizeResponse`      | Required provider in server mode; optional response mapping.                                       |
+| `providerContext`                        | undefined; forwarded unchanged, never interpreted as backend syntax.                               |
+| `rowKey`                                 | `'id'`; dot path or `(row: Row) => string \| number`.                                              |
+| `pageSizeOptions`                        | `[10,25,50,100]`; positive integer sizes; page size may be set programmatically outside this list. |
+| `selectable`, `rowClickable`             | `false`; explicitly opt into selection or row activation.                                          |
+| `actions`                                | `[]`; visible/disabled/loading predicates are evaluated per row.                                   |
+| `columnVisibility`                       | `true`; controls the built-in column dialog only.                                                  |
+| `persistenceAdapter`, `persistenceKey`   | Both needed to persist visibility. No global storage by default.                                   |
+| `exporters`, `exportFileName`            | `[]`, `'export'`; adapter opt-in, current/all scopes.                                              |
+| `messages`, `icons`                      | Partial overrides of bundled defaults. SVG definitions only for icons.                             |
+| `direction`, `theme`                     | `'ltr'`, `'light'`; root-scoped RTL and independent light/dark palette.                            |
+| `mobileBreakpoint`, `mobileSummaryLimit` | `960` pixels, `3`; mobile when viewport width is below threshold.                                  |
+| `filterDebounce`                         | `250` ms; nonnegative finite delay, server filters only.                                           |
+| `autoLoad`                               | `true`; false suppresses **all automatic provider requests**, not only the first.                  |
+| `loading`, `disabled`                    | `false`; externally adds loading / disables built-in mutating UI.                                  |
+| `dense`, `fixedHeader`, `height`         | `false`, `false`, unset; reference layout controls.                                                |
+| `showToolbar`, `showPagination`          | `true`; custom slots can replace these regions.                                                    |
+| `rowClass`                               | `(row, rowIndex) => ClassValue`, unset.                                                            |
+
+Page is one-based, page size is a positive integer. Invalid numeric model values
+use the corresponding default as the effective value without mutating the prop.
+An invalid user page jump is rejected with an associated error; Latin, Persian,
+and Arabic-Indic digits remain supported. Page size changes and built-in filter
+or sort changes reset the page, as described above. Sort clicks alternate asc/desc
+for that column; clear sorting programmatically with null.
+
+When a new local dataset or accepted server total makes a page out of range,
+propose the last valid page (minimum 1) once per data revision. An uncontrolled
+page corrects itself; a controlled parent may reject the proposal, leaving the
+page empty. Do not repeatedly refetch an invalid controlled page. A provider page
+correction uses reason `page` and does not report intermediate rows as the new page.
+
+### Columns, cell types and filters
+
+Retain all reference column options: key/label/field/type/formatter,
+sortable/sortKey, filterable/filter/options, align/width/minWidth/compact,
+hideable/hiddenByDefault/mobile, cellClass/headerClass/exportValue,
+numberFormat/dateFormat/tooltip. Field defaults to the column key, supports dot
+paths or a typed getter. Formatter and exportValue are separate; text is never
+interpreted as HTML. String/number zero and boolean false must remain visible.
+
+All 12 cell types remain: text, number, boolean, date, select, chip, icon, image,
+link, copy, expandable-text, custom. A select cell is a display mapping, not inline
+editing. Custom cells use slots, falling back to text if absent. SVG icon values
+use `{ path, viewBox?, stroke? }`; no external font or arbitrary markup is parsed.
+Link/image URL policies and CSV formula defenses must be ported and tested.
+
+Filters use clauses keyed by column key, with contains, startsWith, endsWith, eq,
+neq, gt, gte, lt, lte, between and in. Retain partial ranges and empty-filter
+removal without dropping zero/false. Unknown column keys are ignored in local
+processing but retained in provider filters for consumer-defined backend filters.
+Hidden columns can still participate in sorting/filtering. Removed columns clear
+a sort targeting them; custom server filter keys are not silently deleted.
+
+### Row identity and selection
+
+Row keys are strings or finite numbers; `0` and `'0'` are distinct. Validate
+missing/invalid keys and duplicate keys on each displayed page. Do not invent
+index-based identity. Runtime checks cannot prove arbitrary Row interfaces:
+consumers must validate their business schema in the provider/normalizer.
+
+Selection keys persist across page, sort, filter, mode, context, provider and
+items changes, including keys no longer present. This avoids silently losing
+server selection; clear it explicitly when changing datasets. A rowKey definition
+change proposes an empty selection. Keys are deduplicated without coercion.
+Select-page adds/removes only displayed keys; selected rows in the event are only
+those displayed now. No cross-page record cache is promised.
+
+### Visibility and persistence
+
+Unknown/duplicate visible keys are removed. `hideable=false` columns are always
+included, even for an explicit empty list. Rendering follows schema order, not
+visibility-array order. New columns follow hiddenByDefault only when visibility
+is uncontrolled; controlled models keep the parent's explicit intent.
+
+Priority: controlled model → current user changes → saved state → schema defaults.
+Restore asynchronously only on mount or adapter/key replacement and only if no
+newer model/user change occurred. Ignore stale restore completion, unmount, or
+invalid version/data. Persistence failures do not turn successful data loads into
+errors. Serialize saves for a key so an old completion cannot become the final
+stored value. `resetColumnVisibility()` removes saved state and proposes defaults;
+if accepted, save the resulting defaults. The adapter shape remains version 1.
+
+## Provider lifecycle
+
+`DataProvider<Row>` types canonical `{ items: readonly Row[], total, meta? }` or
+row-array responses. For a backend envelope, use `DataProvider<Row, Raw>` and a
+`ResponseNormalizer<Row>` accepting unknown. The component boundary accepts an
+unknown provider response; it validates the normalized container, total, object
+rows and row keys. A raw row array normalizes total to its own length; it is not
+suitable for a paginated backend that needs a larger filtered count.
+
+Requests contain page, itemsPerPage, sort `{ columnKey, field?, direction }` or
+null, cleaned filters, context, optional signal, and reason. `field` resolves from
+sortKey, string field, then the column key; getter fields without sortKey use the
+column key as backend identifier. Total must be a finite nonnegative integer and
+must not be less than the returned page length. Normalize responses from custom
+normalizers too; do not trust their TypeScript annotation as runtime validation.
+
+| Trigger                                     | Behavior                                                                                                           |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| mount / enter server mode                   | Request reason `initial` when autoLoad=true.                                                                       |
+| accepted page / size / sort / filter        | One request with reason `page` / `page-size` / `sort` / `filter`.                                                  |
+| provider, normalizer or context replacement | Invalidate old work; request reason `refresh` when autoLoad=true.                                                  |
+| columns replacement                         | Recompute sort field/visibility; reload only if the effective server query changes.                                |
+| autoLoad becomes false                      | Cancel debounce and pending automatic load; keep last successful rows, no stale commit.                            |
+| autoLoad becomes true                       | Load the current query once if in server mode.                                                                     |
+| disabled becomes true                       | Suppress mutating built-in UI; parent updates, auto loads and ref methods still work.                              |
+| refresh / retry                             | Cancel debounce and load immediately, even with autoLoad=false or disabled=true. Local refresh recomputes locally. |
+| enter local mode / unmount                  | Abort and invalidate in-flight loads and exports; clean up timers/listeners.                                       |
+
+A new query invalidates the old request immediately, including during debounce.
+Use both AbortController and a monotonically increasing request identity; a
+provider ignoring abort may not commit stale rows, errors or lifecycle events.
+Keep prior rows internally during loading, while the loading view is shown.
+A current load failure clears displayed rows, sets error, emits load-error and
+then loading-change(false); retry uses the current accepted query. Abort and stale
+responses produce no load-success/load-error. No work/events run after unmount.
+Missing provider in server mode is a visible configuration error, not empty data.
+
+Only provider work emits load events: load-start(request), loading-change(true),
+then load-success({ request, result }) or load-error({ request, error }), followed
+by loading-change(false). Overlapping replacement keeps one aggregate pending
+loading interval; stale finalizers may not turn off the new load's spinner.
+External `loading` contributes to getState().loading but is not a provider event.
+`options-change` has the query snapshot with reason for the accepted change and
+no request signal; selection/visibility changes are excluded.
+
+## Events, slots, and interaction
+
+`SmartDataTableEmits<Row>` names all events and exact payloads, including
+selection-change, column-visibility-change, options-change, load-start/success/error,
+loading-change, export-start/success/error, row-click, row-action, and cell-click.
+No Vue 2 input event is emitted. All custom events must be declared in defineEmits.
+
+Row activation requires `rowClickable=true` and `disabled=false`; attaching a
+listener alone does not make rows clickable. Desktop rows use Enter/Space with
+preventDefault for Space; the mobile open-row control follows the same contract.
+Do not inspect `$listeners`, `$attrs` or internal VNode listeners for activation.
+A row-click payload retains `{ row, rowKey, index, event }`. Native root `@click`
+is separate from row-click; custom events must not fall through to the DOM.
+Controls, links, selection, actions and disclosure stop row activation. An ordinary
+cell click may emit one cell-click followed by one row-click when enabled; action
+and link controls must never also activate the row. Disabled blocks both events;
+read-only mobile disclosure remains usable. Custom slots own their disabled and
+HTML/URL safety behavior, with disabled included in relevant contexts.
+
+Slot names remain toolbar, toolbar-prepend/append, header and header.<key>, cell
+and cell.<key>, filter.<key>, action.<key>, row-actions, mobile-summary/details,
+loading, empty, error, footer, export-progress. Specific header/cell slots win over
+generic ones. row-actions replaces built-in row actions; action.<key> replaces
+one action. State slots get `{ state }`; header gets `{ column }`; cell gets
+`{ row, rowKey, column, value, formattedValue, rowIndex, mobile }`; filter gets
+`{ column, clause, disabled, setClause, clear }`; action gets
+`{ action, row, rowKey, disabled, loading, trigger }`; row-actions gets
+`{ row, rowKey, actions, disabled }`; mobile gets
+`{ row, rowKey, columns, rowIndex, disabled }`. Error gets `{ error, retry }` and
+export-progress gets `{ percent }`. Loading/empty and toolbar prepend/append have
+no props. Dynamic slot keys are strings; types do not prove a key exists in schema.
+
+State display precedence is error → loading → empty/no-results → rows. No-results
+uses the same empty slot with the distinct message when filters are active.
+Pagination mutating UI is disabled during loading/error or disabled=true; row/page
+selection acts only on displayed data. There is no separate no-results slot.
+
+## Ref methods and export
+
+Only expose the `SmartDataTableExpose` interface with defineExpose:
+refresh(), resetFilters(), clearSelection(), resetColumnVisibility(),
+exportData(exporterKey, scope='current'), and getState(). No generic reset or
+internal setters/load/timers are public. Refresh/retry uses the fixed `refresh`
+reason; arbitrary refresh(reason) input is intentionally removed.
+
+Methods remain callable when disabled. Resets respect controlled ownership;
+parents can reject a proposal. getState returns independent container snapshots,
+not mutable internal arrays/objects; opaque filter values/errors remain consumer
+objects and must not be mutated. It includes effective models, total, loading and
+error, not provider internals.
+
+Exporter context includes snapshot columns/rows/query, total, fileName, signal,
+reportProgress and fetchPage. Current scope exports the displayed page. All scope
+iterates the accepted filtered/sorted query from page 1 without changing live
+page/models. Capture context and input containers at start; later model replacements do not
+change the export query. Rows and opaque values are shared business objects;
+consumers should replace data immutably rather than mutating it during export. Mode/provider/context replacement aborts exports. Only one export
+runs at a time; concurrent calls reject. Export during a pending/failed load rejects
+to avoid mixing a new query with old displayed rows. Unknown adapters/unsupported
+scopes reject before export-start; begun exports emit success/error and settle
+cleanly. Abort rejects with AbortError and emits export-error unless unmounted.
+
+The CSV adapter retains UTF-8 BOM, escaping, CRLF, formula guards, long/leading-zero
+numeric preservation, HTML-to-text conversion, cell truncation, and exportValue.
+Its planned options retain key/label/fileName/pageSize/download and add maxRows
+(default 100,000). Exceeding the positive integer cap fails with no partial download;
+this is an in-memory export, not an unlimited streaming API. Progress is clamped
+to 0–100; fetchPage honors signal and validates responses. The default downloader
+needs a browser only when export is invoked; callers can inject download for other
+runtimes. A backend must support page/offset export of the same query, with stable
+ordering; a changing dataset cannot be guaranteed to provide a transactional snapshot.
+
+## Verification status
+
+Compile-only fixtures in tests/contracts use the actual exported types through a
+non-product ContractProbe SFC. They exercise six models, generic formatters and
+slots, event payloads, and rejected incompatible types. They prove signatures,
+not provider lifecycle, real rendering, runtime ownership, keyboard behavior, SSR,
+or packed consumer support. Acceptance IDs in the matrix are planned runtime
+checks for stages 4–8; none is claimed passed by this contract PR.
+
+The selected supported baseline stays Vue 3.5.44, TypeScript 5.9.3 and vue-tsc
+3.3.13. Generic SFCs, defineSlots and tuple emits are available from Vue 3.3; this
+does not establish support for older versions. No defineModel default is used.
+See the official [script setup reference](https://vuejs.org/api/sfc-script-setup.html),
+[models guide](https://vuejs.org/guide/components/v-model.html), and
+[event declarations](https://vuejs.org/guide/components/events.html).

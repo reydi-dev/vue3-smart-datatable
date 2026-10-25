@@ -99,8 +99,7 @@ no configured checks, and squash-merged as
 
 ### Next action
 
-Obtain user approval for the stage 2 PR after CI passes. Then recheck its head,
-squash merge, close #4, and start the public-contract/parity work in #5.
+Completed after user approval and the branch naming correction recorded below.
 
 ### Stage 2 approval and branch naming correction
 
@@ -115,3 +114,53 @@ The approved implementation head `6046bd23861299e011bb32abba3883220c88222a`
 also passed [CI run 40212954156](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40212954156).
 The naming correction changes documentation only; merge follows a check of the
 renamed PR head and available checks.
+
+## 2026-10-25 — Stage 2 merged; stage 3 public contracts
+
+### Merge and tracking
+
+- GitHub automatically closed #14 when its head branch was renamed. Replacement
+  PR #15 preserves that connection and the user's existing implementation approval.
+- Rechecked PR #15 head `4d5ed75c9d6f735301840a19e25f3b18475d5a12` and its
+  successful validate check, then squash-merged as
+  `f909ca7fe08ce1253385c6178f2b44231266b7fb`.
+- Removed the completed local/remote working branch. Issue #4 is closed;
+  issue #5 is in progress. Current branch: `feat/public-contracts`.
+
+### Stage 3 scope
+
+- Added proposed generic public types for columns, models, provider/normalizer,
+  events, slots, ref methods, export and persistence. Preserved the reference
+  license notice and removed broad any/index-signature requirements for Row.
+- Added a reference parity matrix covering props/events/slots/cells/ref/adapters,
+  deliberate differences and named runtime acceptance cases for stages 4–8.
+- Documented controlled/uncontrolled ownership, parent synchronization, event
+  ordering, request cancellation, selection across pages, persistence races,
+  disabled/autoLoad behavior, export bounds, and migration from Vue 2.
+- Kept supported tooling baseline Vue 3.5.44 / TypeScript 5.9.3 / vue-tsc 3.3.13.
+  Do not infer support for older versions from the macro availability alone.
+- Added compile-only positive and negative TS/Vue examples, using a non-product
+  ContractProbe to verify models, generic slots, formatter and event types.
+- Fixed lint/formatter overlap with eslint-config-prettier and enabled dotted
+  named slots in the existing Vue lint rule. Runtime dependencies unchanged.
+
+### Validation and limits
+
+- Targeted strict typecheck passed, including real rejection of a string page
+  and a missing generic slot property in the deliberately invalid template.
+- TypeScript expected-error cases check incompatible selection keys, formatter
+  rows, breakpoint aliases, event/provider rows, and unexposed internal methods.
+- `npm run validate` passed: formatting, lint, positive typecheck plus
+  intentional negative-template verification, the existing 1 component check,
+  ESM/CSS/declaration build, the existing 1 distribution-output check, and demo
+  build. No redundant browser or unimplemented unit suite was run.
+- PR/CI evidence will be linked from issue #5 and recorded below.
+- No table runtime, adapter, provider lifecycle, or keyboard interaction is
+  implemented or claimed passing by the type fixtures. Their matrix checks are
+  explicitly planned for the later implementation stages.
+- No npm publication, public Release or demo deployment performed.
+
+### Next action
+
+Review the stage 3 API differences before implementation. After approval and a
+current successful PR check, merge and begin pure core/adapters in issue #6.

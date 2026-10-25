@@ -11,13 +11,15 @@ The development page contains a temporary pipeline probe, not the finished table
 
 The first release targets local/server data, sorting, filters, pagination,
 selection, responsive desktop/mobile layouts, RTL, themes, custom cells and CSV.
-These features are planned; the current work establishes the development pipeline.
+These features are planned; current work establishes the development pipeline
+and proposed public contracts.
 
 - [Roadmap and scope](docs/roadmap.md)
 - [Milestones](https://github.com/reydi-dev/vue3-smart-datatable/milestones)
 - [Stage issues](https://github.com/reydi-dev/vue3-smart-datatable/issues)
 - [Progress and validation](docs/progress.md)
 - [Architecture decisions](docs/architecture.md)
+- [Proposed API and parity matrix](docs/contract-matrix.md)
 
 ## Local development
 
@@ -32,7 +34,7 @@ npm run dev
 npm run validate
 ```
 
-Validation checks formatting, lint, types, the pipeline component, library/package
+Validation checks formatting, lint, positive/negative contract types, the pipeline component, library/package
 outputs, and the playground build. Unit and browser suites will be added with
 the corresponding features; their commands currently have no tests to run.
 
