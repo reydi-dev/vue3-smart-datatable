@@ -453,6 +453,7 @@ keyboard/accessibility and visual parity against the real table.
 
 ### Next action
 
-Review the stage 7 PR linked from #9 and the committed visual examples. Obtain
+Review [stage 7 PR #20](https://github.com/reydi-dev/vue3-smart-datatable/pull/20)
+and the committed visual examples. Obtain
 maintainer visual/stage approval before merge. Stage 8 (#10) verifies independent
 packed consumers, declarations/CSS/exports and minimal SSR/browser hydration.
