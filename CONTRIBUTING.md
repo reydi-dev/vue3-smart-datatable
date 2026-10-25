@@ -8,16 +8,19 @@ on the current implementation stage. Stage results need maintainer approval
 before merge; package publication, public releases, and demo deployment need
 explicit approval at their release stages.
 
-Use Node from `.nvmrc` and run `npm ci`. `npm run dev` starts the temporary
+Use Node from `.nvmrc` and run `npm ci`. `npm run dev` starts the development
 playground. `npm run validate` runs the checks currently required by CI.
 Individual commands: `format:check`, `lint`, `typecheck`, `test:components`,
 `test:unit`, `build`, `test:dist` (after build), and `build:demo`.
 
 `test:unit` runs pure core and adapter behavior tests in a Node environment;
-`test:components` runs mounted state/provider/persistence/export fixtures and the
-existing pipeline SFC check. `test:e2e` is configured
-for the future real UI and currently has no tests. Do not claim it passes.
-Playwright browser installation is not required for the current validation command.
+`test:components` runs mounted state/provider/persistence/export and desktop UI
+checks. `test:e2e` runs two Chromium flows against the actual playground. Install
+Chromium with `npx playwright install chromium` first; CI uses `--with-deps` on
+Ubuntu. An existing executable can be selected with
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. Browser checks are separate from
+`validate` so non-browser checks can run without downloading a browser. Both
+commands run in CI.
 
 Check the [roadmap](docs/roadmap.md) and existing issues before opening work. Use
 the issue forms for reproducible bugs or use cases; link the relevant issue in

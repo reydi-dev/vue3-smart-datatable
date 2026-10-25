@@ -5,16 +5,17 @@ UI framework.
 
 **In development — not published.** The planned npm package is
 `@reydi-dev/vue3-smart-datatable`. No installable Vue 3 release is available yet.
-The development page contains a temporary pipeline probe, not the finished table.
+The development playground now runs the desktop table with synthetic local/server data.
+Mobile rendering and release validation are still in progress.
 
 ## Goal and progress
 
 The first release targets local/server data, sorting, filters, pagination,
 selection, responsive desktop/mobile layouts, RTL, themes, custom cells and CSV.
-These features are planned; current work establishes the development pipeline
-and accepted public contracts. Pure data processing and the CSV/storage adapters
-are implemented, along with internal reactive state/provider coordination.
-The table component and interactive UI remain planned.
+The desktop component implements sorting, filtering, pagination, selection,
+column visibility, row actions, all 12 cell types, typed slots, CSV integration
+and persisted column choices. Mobile rendering, the RTL/theme/accessibility
+review, packed-consumer/SSR verification and publication remain later stages.
 
 - [Roadmap and scope](docs/roadmap.md)
 - [Milestones](https://github.com/reydi-dev/vue3-smart-datatable/milestones)
@@ -36,9 +37,18 @@ npm run dev
 npm run validate
 ```
 
-Validation checks formatting, lint, positive/negative contract types, the pure core/adapters, mounted state/provider fixtures, pipeline component, library/package
-outputs, and the playground build. Unit checks cover core and adapter behavior. The browser suite will be added
-with the real UI and currently has no tests to run.
+Validation checks formatting, lint, positive/negative contract types against the
+real component, pure core/adapters, mounted state/UI fixtures, package outputs
+and the playground build. CI also installs Chromium and runs two browser flows:
+
+```sh
+npx playwright install chromium
+npm run test:e2e
+```
+
+For an existing compatible Chromium installation, set
+`PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` to its executable path. See
+[progress](docs/progress.md) for the actual browser environments verified.
 
 The library build emits ESM, declarations and separate CSS. The package remains
 private to prevent accidental publication during development.
@@ -52,3 +62,19 @@ runtime or development dependency on that checkout.
 
 See [contributing](CONTRIBUTING.md) and [security](SECURITY.md). Licensed under
 [MIT](LICENSE), copyright Mohammad Reza Dehghani.
+
+## Source usage during development
+
+```vue
+<script setup lang="ts">
+import SmartDataTable from './src'
+// Package consumers will use @reydi-dev/vue3-smart-datatable and its /styles.css
+// export after publication. This example uses the unpublished checkout.
+const columns = [{ key: 'name', label: 'Name', sortable: true }]
+const items = [{ id: 1, name: 'Example' }]
+</script>
+
+<template>
+  <SmartDataTable :columns="columns" :items="items" />
+</template>
+```

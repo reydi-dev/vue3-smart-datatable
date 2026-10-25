@@ -19,9 +19,10 @@
   approval at their planned stages. Never store or print credentials.
 - Use Node from `.nvmrc` and `npm ci`. Current checks: `npm run validate`.
   `npm run dev` starts the playground; `npm run build` emits ESM/CSS/types.
-  `test:components` covers mounted state/provider/persistence/export fixtures.
-  `test:dist` requires the build. Unit tests now cover pure core/adapters. E2E currently has no tests and
-  must not be included as a green check until real suites exist.
+  `test:components` covers mounted state/provider/persistence/export and desktop UI fixtures.
+  `test:dist` requires the build. Unit tests cover pure core/adapters. `test:e2e` runs two real desktop browser flows;
+  install Playwright Chromium first (or provide PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH).
+  CI runs validate followed by Chromium E2E on Ubuntu.
 - Link stage issues in PRs, keep issue labels honest, and update roadmap/progress.
 - Run checks appropriate to the change; avoid redundant tests and unsupported
   claims of passing tests or product capabilities.

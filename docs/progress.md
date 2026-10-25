@@ -301,3 +301,80 @@ reverified before merging. Stage 5 details follow.
 
 Review and approve the stage 5 PR before merge. Stage 6 (#8) connects the accepted
 contracts and composables to the actual semantic desktop table and reference UI.
+
+## 2026-10-25 — Stage 5 merged; stage 6 desktop UI
+
+### Merge and tracking
+
+- User approved stage 5. Rechecked PR #18 head
+  `c0e57e292e1bb9d20aefe6829639cba8e233f2d9` and its successful validate check
+  before squash merging.
+- Merge commit: `a031a9f44393c942fe33b3fa27b4856a0511f59a`.
+  Deleted the completed local/remote branch; issue #7 is closed.
+- Stage 6 is tracked by #8, marked in progress; branch: `feat/desktop-table`.
+
+### Implementation
+
+- Replaced the pipeline export with the real generic SmartDataTable SFC, exposed
+  as both default and named component, retaining root types/adapter factories.
+  All six models preserve undefined ownership; canonical emits are declared and
+  the instance exposes exactly the approved six methods.
+- Wired existing composables into a semantic desktop renderer. Added sorting,
+  selectable rows/pages with typed keys, explicit click/keyboard row activation,
+  current state/slot context, row classes, scrolling/dense/fixed-header options,
+  and visible/disabled/loading row actions with leading/trailing/menu presentation.
+- Ported reference Clarity foundations/layout/controls/cells as plain CSS. Kept
+  original tokens, inherited font and namespace, with MIT attribution. SVG objects
+  use local drawings, without fonts or raw HTML; removed the old ancestor-dark
+  bridge. No framework, Sass runtime or new dependency was introduced.
+- Added native text/number/date/select/range filter controls, partial clauses,
+  localized operator labels, custom filter setters and reset/no-results behavior.
+  Added pagination size options and validated localized jump input, disabling
+  navigation/size during pending/error/disabled states.
+- Implemented all 12 cell types with text escaping, URL allowlists, SVG validation,
+  clipboard success feedback/caught permission failures and expandable text.
+  Controls/actions/links do not activate the row; normal cells can emit one
+  cell-click and one explicitly enabled row-click.
+- Forwarded specific/generic header and cell slots with correct priority, custom
+  filters/actions/row-actions and replacement toolbar/footer/state/progress slots.
+  Slot-presence detection runs during render so conditional parent slots update.
+- Added native column dialog apply/reset/mandatory-column handling, Escape/Tab
+  boundaries and trigger focus restoration. Export disclosure supports current/
+  all adapters, progress and localized failure feedback. DOM listeners and async
+  feedback are guarded on disposal; core remains independent of DOM/Vue.
+- Replaced temporary PipelineProbe/StateProbe/ContractProbe files with the actual
+  local/server synthetic customer playground and actual-SFC compile fixtures.
+  The demo includes simulated provider failure/retry, column storage and CSV.
+
+### Actual validation
+
+- Full `npm run validate` passed: formatting, lint, positive/expected-negative
+  actual-SFC template types, 25 unit tests, 33 component tests, library ESM/CSS/
+  declarations, 2 preliminary distribution checks and playground production build.
+- Eight new desktop integration scenarios replace the old placeholder mount test;
+  existing 25 state/lifecycle scenarios remain. Tests verify actual UI wiring,
+  defaults, exact payloads, slot changes, dialog/ref surface and export failures
+  rather than duplicating pure-core implementation tests.
+- Both real Chromium E2E flows passed locally. The local flow also passed after
+  adding action-disclosure activation coverage. Verified local/server query UI,
+  selection across pages, sort/filter reset, dialog Escape/focus, row keyboard
+  activation, actual CSV download, pending guards, failure/retry, debounced
+  filtering, page size and disabled controls, with no pageerror events.
+- Local browser: existing Chromium 140.0.7339.16, selected with
+  PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH on macOS 13. Playwright 1.64.1's browser
+  installer rejects this OS; that installer was not reported as successful.
+  CI installs its own matching Playwright Chromium on Ubuntu and runs both flows
+  after clean npm ci/validate. CI evidence is recorded in the implementation PR.
+- Inspected a real desktop screenshot: reference Clarity tokens, spacing,
+  selection, sort indicator, fixed-height scrolling and footer render correctly.
+  Screenshot checks are manual evidence, not snapshot assertions or a claim of
+  full visual/mobile/RTL/theme/accessibility acceptance.
+- Package remains private 0.0.0. No npm publish, public Release/tag or demo deploy.
+  Packed independent consumers, SSR render/hydration and a supported browser/
+  framework matrix remain stage 8; mobile and accessibility review remain stage 7.
+
+### Next action
+
+Review the stage 6 implementation PR linked from #8 and approve before merge.
+Stage 7 (#9) adds mobile rendering and reviews RTL, themes, responsive behavior,
+keyboard/accessibility and visual parity against the real table.

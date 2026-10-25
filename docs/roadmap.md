@@ -5,7 +5,8 @@ name `@reydi-dev/vue3-smart-datatable`. Preserve the reference design and useful
 behavior while adopting Vue 3 contracts, strict types, and maintainable layers.
 
 **Status:** in development, not published. No release dates are promised.
-The pipeline probe is temporary and is not the table API.
+The desktop table is implemented; mobile/accessibility and release validation
+remain in progress. See progress notes for verified behavior.
 
 ## Delivery milestones
 
@@ -38,7 +39,8 @@ Stages 0 and 1 were recorded retrospectively after their actual completion.
 Local and server data, single-column sorting, filters, pagination, row selection,
 configurable columns, custom slots, existing reference cell types, desktop and
 mobile layouts, RTL/LTR, light/dark themes, CSV export, persistence adapters, and
-TypeScript declarations. These are planned capabilities, not current features.
+TypeScript declarations. Desktop functionality is implemented in stage 6; the
+remaining scope and validation follow the stages above.
 
 Virtualization, inline editing, pivot/grouping, multi-sort, Excel/PDF, a Nuxt
 module, and a redesign are outside the initial scope. SSR claims are limited to

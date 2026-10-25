@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { FilterState, RowKey, RowClick, SortState } from '../../src'
-import ContractProbe from './ContractProbe.vue'
+import { SmartDataTable } from '../../src'
 import { columns, orders, type Order } from './consumer'
 
 const selection = ref<readonly RowKey[]>([])
@@ -17,7 +17,7 @@ function onRowClick(payload: RowClick<Order>) {
 </script>
 
 <template>
-  <ContractProbe
+  <SmartDataTable
     v-model="selection"
     v-model:page="page"
     v-model:items-per-page="itemsPerPage"
@@ -34,6 +34,6 @@ function onRowClick(payload: RowClick<Order>) {
       >{{ row.name.toUpperCase() }} {{ rowIndex }}</template
     >
     <template #cell.name="{ row }">{{ row.amount.toFixed(2) }}</template>
-  </ContractProbe>
+  </SmartDataTable>
   <p>{{ lastName }}</p>
 </template>
