@@ -575,5 +575,5 @@ separate explicit approvals at their planned stages.
 - The deployment CI guard was exercised read-only against the actual successful
   main commit. No Pages deployment was attempted. Final-head CI is linked in PR.
 
-Review the production preview and PR before approving merge and public demo
-deployment; beta publication remains stage 10 (#12).
+Review the production preview and [stage 9 PR #22](https://github.com/reydi-dev/vue3-smart-datatable/pull/22)
+before approving merge and public demo deployment; beta publication remains stage 10 (#12).
