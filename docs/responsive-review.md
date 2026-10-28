@@ -3,7 +3,8 @@
 These are actual Chromium captures of the development playground, using synthetic
 customer records. They retain the reference Clarity design and inherited system
 font. They are review evidence, not generated mockups or screenshot assertions.
-Maintainer visual approval is still required before the stage is merged.
+The maintainer tested the live built preview and approved stage 7 on 2026-10-28;
+the stage has been merged. These captures remain its visual evidence.
 
 ## Desktop: RTL and dark
 
@@ -49,7 +50,6 @@ still stage 8.
 
 ## Maintainer review
 
-Review the spacing, density, typography, light/dark palettes and RTL/mobile
-readability above. Approval covers these stage 7 visuals before proceeding to
-stage 8 distribution/types/SSR work. npm publication, public Releases and demo
-hosting remain separate later approvals.
+The maintainer approved the stage 7 visuals and interactions after testing the
+live built preview on 2026-10-28. Stage 8 proceeds with distribution/types/SSR work.
+npm publication, public Releases and demo hosting remain separate later approvals.

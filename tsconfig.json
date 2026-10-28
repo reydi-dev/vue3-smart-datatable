@@ -20,5 +20,8 @@
     "*.config.ts",
     "tests/**/*.vue"
   ],
-  "exclude": ["tests/contracts/InvalidTemplate.vue"]
+  "exclude": [
+    "tests/contracts/InvalidTemplate.vue",
+    "tests/fixtures/packed-consumer"
+  ]
 }

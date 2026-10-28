@@ -164,8 +164,8 @@ presence check that would miss conditional parent changes. UI integration tests
 exercise these paths and the actual default booleans, model proposals, exact
 payloads and public ref surface. The browser suite covers local/server controls,
 error/retry, keyboard/dialog focus and a real CSV download. Stage 7 extends these
-checks to mobile/RTL/themes. Stage 8 still owns
-independent packed-consumer and SSR hydration validation.
+checks to mobile/RTL/themes. Stage 8 implements
+independent packed-consumer and SSR hydration validation below.
 
 ## Stage 7 responsive rendering and interaction
 
@@ -194,5 +194,29 @@ observer cleanup, mobile contexts/guards and a source SSR/jsdom hydration shell.
 Two added Chromium flows cover real resize/provider preservation, keyboard mobile
 controls, dialog Tab/Escape/focus, scope/contrast, narrow overflow checks and actual
 screenshots. Source hydration evidence does not replace the installed package and
-browser SSR/hydration validation scheduled in stage 8. No new dependency or browser
+browser SSR/hydration validation implemented in stage 8 below. No new dependency or browser
 support matrix is introduced.
+
+## Stage 8 independent distribution boundary
+
+check-packed-consumer.mjs builds an actual npm archive from the current dist and
+installs it into a fresh temporary project outside the repository. The fixture
+owns its package lock and strict tsconfig, imports only public package entries and
+uses standard Vite client/SSR builds. It is excluded from the root source typecheck
+so root/self-package resolution cannot stand in for its independent compiler run.
+The consumer alone resolves its Vue peer, declarations and extracted CSS.
+
+Node imports the installed ESM entry and renders the actual table without DOM
+globals. The client bundle is served as production static files with prerendered
+HTML. Browser checks pause client JS to inspect the inert desktop shell at both
+viewport widths before allowing hydration. They verify final layouts, CSS, slots,
+models/ref, queries, persistence and an actual download without runtime/hydration
+errors. This completes the scoped minimal example, not a full Nuxt support claim.
+
+The library Vite graph guard rejects Vue/@vue runtime modules and playground/test
+imports. The actual archive has an explicit extension/path whitelist and size
+budget. CI uploads a small report containing archive integrity/files/sizes,
+selected versions, actual runtime/browser and verified hydration layouts. No
+source alias, link, SSR noExternal workaround, new library dependency or release
+side effect was introduced. preview:consumer keeps the checked production server
+alive for user testing; its temporary install is removed when stopped.

@@ -35,5 +35,11 @@
 - Adjust light muted text one shade darker for the tested contrast target.
 - Add source hydration-shell checks and real responsive screenshots/browser flows.
 
-The package remains private. Maintainer visual approval, distribution/SSR release
-validation and npm publication are pending.
+- Validate a real tarball in an independently installed/locked Vue consumer.
+- Check strict packed declarations and expected-negative templates without source aliases.
+- Verify Node ESM/SSR and controlled production browser hydration at desktop/mobile widths.
+- Exercise installed CSS, models/slots/ref, persistence and actual CSV download.
+- Guard the library build graph/archive contents and record CI package evidence.
+- Add a production preview command for the installed package.
+
+The package remains private. Release docs/demo and npm publication are pending.
