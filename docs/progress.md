@@ -532,6 +532,7 @@ packed consumers, declarations/CSS/exports and minimal SSR/browser hydration.
 
 ### Next action
 
-Review the stage 8 PR linked from #10. After approval, merge and proceed to stage 9
+Review [stage 8 PR #21](https://github.com/reydi-dev/vue3-smart-datatable/pull/21).
+After approval, merge and proceed to stage 9
 (#11): release documentation and demo preparation. Publication/hosting remain
 separate explicit approvals at their planned stages.
