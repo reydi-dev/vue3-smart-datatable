@@ -13,6 +13,7 @@ export default defineConfig({
           if (
             /\/node_modules\/(?:vue|@vue)\//.test(path) ||
             path.includes('/playground/') ||
+            path.includes('/docs/examples/') ||
             path.includes('/tests/')
           ) {
             this.error(`Unexpected library runtime module: ${path}`)

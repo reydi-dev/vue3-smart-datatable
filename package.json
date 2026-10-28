@@ -2,7 +2,7 @@
   "name": "@reydi-dev/vue3-smart-datatable",
   "version": "0.0.0",
   "private": true,
-  "description": "An independent, TypeScript-ready data table library for Vue 3 (in development).",
+  "description": "A TypeScript-ready Vue 3 data table with local/async data, responsive layouts, RTL, typed slots and CSV.",
   "license": "MIT",
   "author": "Mohammad Reza Dehghani",
   "type": "module",
@@ -39,16 +39,17 @@
     "lint": "eslint . --max-warnings=0",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json && node scripts/check-contract-errors.mjs",
+    "typecheck": "node scripts/check-doc-examples.mjs && vue-tsc --noEmit -p tsconfig.json && node scripts/check-contract-errors.mjs",
     "test:unit": "vitest run --config vitest.unit.config.ts",
     "test:components": "vitest run --config vitest.components.config.ts",
     "test:e2e": "playwright test",
     "build": "vite build && vue-tsc -p tsconfig.build.json",
     "test:dist": "node --test tests/consumers/distribution.test.mjs",
-    "build:demo": "vite build --config vite.demo.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts && node scripts/check-demo-output.mjs",
     "validate": "npm run format:check && npm run lint && npm run typecheck && npm run test:unit && npm run test:components && npm run build && npm run test:dist && npm run build:demo",
     "test:consumer": "node scripts/check-packed-consumer.mjs",
-    "preview:consumer": "node scripts/check-packed-consumer.mjs --preview"
+    "preview:consumer": "node scripts/check-packed-consumer.mjs --preview",
+    "preview:demo": "vite preview --config vite.demo.config.ts"
   },
   "peerDependencies": {
     "vue": "^3.5.44"

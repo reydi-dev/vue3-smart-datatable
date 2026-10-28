@@ -16,7 +16,8 @@ Individual commands: `format:check`, `lint`, `typecheck`, `test:components`,
 
 `test:unit` runs pure core and adapter behavior tests in a Node environment;
 `test:components` runs mounted state/provider/persistence/export and desktop/mobile UI
-checks. `test:e2e` runs four Chromium flows against the actual playground. Install
+checks. After `build:demo`, `test:e2e` runs four development interaction flows and
+one production public-demo flow in Chromium. Install
 Chromium with `npx playwright install chromium` first; CI uses `--with-deps` on
 Ubuntu. An existing executable can be selected with
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`. Browser checks are separate from
@@ -34,3 +35,14 @@ each PR. Keep future stages marked planned until work begins.
 Update `docs/progress.md` with actual validation, limitations, and the next step.
 Preserve the MIT notice when adapting reference code. Do not modify the separate
 Vue 2 repository as part of work here.
+
+The public demo has local, async, slots/actions and Persian RTL examples with
+copyable source. `npm run build:demo && npm run preview:demo` serves the production
+output. The development-only interaction fixture is available through
+`?fixture=interaction` during `npm run dev`; it is excluded from public builds.
+Documented examples import the package name: demo-only aliases support development,
+while `test:consumer` copies them into its independent project and typechecks the
+actual installed archive without aliases. Quick-start source must match README;
+run `node scripts/check-doc-examples.mjs --write` after changing it.
+
+See [demo operations](docs/demo.md) for media reproduction and approved deployment.
