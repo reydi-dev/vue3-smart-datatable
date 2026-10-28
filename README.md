@@ -125,11 +125,11 @@ not required. See the full
 Desktop/mobile PNGs and the interaction GIF are captured from the built Vue 3
 demo. They are not mockups or captures of the Vue 2 repository.
 
-![Desktop demo](docs/media/desktop.png)
+![Desktop demo](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/desktop.png)
 
-![Mobile RTL and dark demo](docs/media/mobile.png)
+![Mobile RTL and dark demo](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/mobile.png)
 
-![Selection, sorting, filtering and paging in Vue 3](docs/media/interaction.gif)
+![Selection, sorting, filtering and paging in Vue 3](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/interaction.gif)
 
 ## Validation and scope
 
