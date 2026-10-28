@@ -224,3 +224,23 @@ approval remain stage 7; packed-consumer/SSR/hydration X01 remains stage 8.
 Visual approval remains the maintainer's stage boundary. Screen-reader/browser
 matrix certification is not implied. Stage 8 still owns X01 installed package,
 SSR render and controlled browser hydration acceptance.
+
+## Stage 8 installed-package evidence (X01)
+
+The independent fixture imports the actual tarball's default/named component,
+public types/adapters and stylesheet. It has its own exact tooling lockfile and
+strict declarations check (skipLibCheck=false), no source alias/workspace link and
+no inherited tsconfig. Positive models/formatter/events/slots/ref examples and
+exact expected-negative diagnostics exercise the packed declarations.
+
+check-packed-consumer.mjs verifies archive paths/size, unpacked install, peer
+resolution, normal production client/SSR builds, DOM-free Node import/render and
+controlled real Chromium hydration. Client JS is held while inspecting initial
+SSR rows at 1280/375 px, then released to verify desktop/mobile layout, actual
+exported CSS and working selection/ref/query/column/storage/download interactions.
+The build graph guard also rejects bundled Vue runtime and demo/test modules.
+
+The minimum and selected stable Vue are both 3.5.44, verified once as a unique
+version. The scoped package/SSR example is implemented; full Nuxt integration,
+other Vue/TypeScript/browser matrices and release publication are not implied.
+See [distribution validation](distribution-validation.md) and final-head PR CI.

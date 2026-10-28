@@ -457,3 +457,81 @@ Review [stage 7 PR #20](https://github.com/reydi-dev/vue3-smart-datatable/pull/2
 and the committed visual examples. Obtain
 maintainer visual/stage approval before merge. Stage 8 (#10) verifies independent
 packed consumers, declarations/CSS/exports and minimal SSR/browser hydration.
+
+## 2026-10-28 — Stage 7 approved/merged; stage 8 installed package and SSR
+
+### Merge and tracking
+
+- User tested the live built preview and approved continuing. This completes the
+  stage 7 visual/interaction approval; screenshots alone were not the approval UI.
+- Rechecked PR #20 head `028fc0bdde394cbf64e4eb8e06959d8aba3e2ec6` and successful
+  CI before squash merge. Merge commit:
+  `1db82172bb283ea6605a5ede9b78b95f0677295f`.
+- Deleted the completed local/remote branch; #9 is closed. Stage 8 is tracked by
+  #10, marked in progress; branch: `test/package-consumers-and-ssr`.
+
+### Implementation and evidence
+
+- Added an independently locked consumer fixture and a real npm-pack/install
+  harness. The harness copies the fixture to a fresh temporary project outside the
+  repository, performs its own npm ci, installs the real archive, verifies an
+  unpacked nonsymlink package/peer graph and clears NODE_PATH in subprocesses.
+  No source aliases, workspace links, inherited tsconfig or SSR noExternal flags.
+- The fixture imports the actual default/named component, public types, stylesheet
+  and CSV/storage factories. Strict declarations (skipLibCheck=false) verify an
+  ordinary Customer interface through columns/formatter, six models, event
+  payloads, slots and ref methods. A separately compiled invalid fixture must
+  produce exactly the invalid-page and missing-row-property diagnostics; checked
+  ts-expect-error cases reject formatter/provider/selection mismatches.
+- Standard production Vite client/server builds succeed. A separate Node process
+  asserts window/document are absent, imports the installed ESM entry/adapters
+  and renders the actual table. It inserts that SSR desktop shell into the client
+  HTML; no browser storage/download action is invoked during SSR.
+- Real Chromium checks hold client JS to inspect inert SSR rows at 1280/375 px,
+  then release it and verify hydration without runtime/mismatch errors. Desktop
+  stays a table, narrow layout changes to mobile after mount, and actual exported
+  CSS/custom slot values work. Selection/ref behavior works in both layouts;
+  desktop additionally verifies sorting, page/filter changes, persisted column
+  choices, row actions and an actual CSV download from the installed package.
+- Added a library build-graph guard against bundled Vue/@vue runtime and demo/test
+  imports, plus actual archive path/extension and size-budget checks. Initial
+  local archive: 39 intended files, 37,056 bytes compressed / 147,981 unpacked;
+  later README/metadata edits can change exact size/integrity. The per-run report
+  is authoritative. No source/fixture/demo output/config/credentials files are
+  allowed by the archive whitelist.
+- npm registry dist-tags on 2026-10-28 show selected stable Vue 3.5.44, identical
+  to the declared minimum. One unique Vue version is verified, avoiding duplicate
+  runs. Peer range remains ^3.5.44. Fixture tools are TS 5.9.3, vue-tsc 3.3.13,
+  Vite 8.3.5/plugin-vue 6.0.10 and Node tooling types 24.19.2.
+- Added test:consumer and preview:consumer. Preview performs the same installed
+  checks and keeps the actual production SSR server alive for user testing until
+  stopped. Normal checks clean up temporary projects/servers automatically.
+- CI runs validate, the four existing source Chromium flows and the independent
+  packed consumer, then uploads packed-consumer-evidence for seven days. The
+  report contains selected/actual runtime/browser versions, archive file list,
+  integrity/size and both hydration layouts. Final-head evidence is linked in PR.
+
+### Actual local validation
+
+- Full npm run validate passed: formatting/lint, positive/negative root contract
+  types, 25 unit tests, 37 component tests, ESM/CSS/types build, 2 preliminary
+  package checks and playground production build. No new unit/UI behavior tests
+  duplicate the unchanged library implementation.
+- The independent consumer passed strict positive/negative types, ordinary client/
+  server builds, DOM-free Node SSR, both controlled browser hydration layouts and
+  the installed selection/ref/query/storage/CSV interactions. Browser is existing
+  Chromium 140.0.7339.16 on macOS 13 via explicit executable path. CI installs
+  matching Playwright Chromium on Ubuntu; no second-browser/Nuxt claim is made.
+- During fixture setup, SSR tooling required explicit @types/node; the checked
+  ts-expect-error was moved onto its formatter line after formatting; and the
+  fixture gained an explicit empty favicon to avoid an unrelated 404. No library
+  runtime/contract change was required to make the independent consumer pass.
+- The verified SSR scope is the deterministic installed-package example, not
+  general Nuxt/framework integration or other Vue/TypeScript/Node generations.
+- Package stays private 0.0.0. No npm publication, public Release/tag or demo deploy.
+
+### Next action
+
+Review the stage 8 PR linked from #10. After approval, merge and proceed to stage 9
+(#11): release documentation and demo preparation. Publication/hosting remain
+separate explicit approvals at their planned stages.

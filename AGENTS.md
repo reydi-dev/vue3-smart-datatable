@@ -22,7 +22,11 @@
   `test:components` covers mounted state/provider/persistence/export and desktop/mobile UI fixtures.
   `test:dist` requires the build. Unit tests cover pure core/adapters. `test:e2e` runs four real desktop/mobile browser flows;
   install Playwright Chromium first (or provide PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH).
-  CI runs validate followed by Chromium E2E on Ubuntu.
+  CI runs validate, Chromium E2E and test:consumer on Ubuntu. The consumer check
+  requires build and Chromium, installs a real tarball outside the repository,
+  and writes test-results/packed-consumer-report.json. Its fixture has a separate
+  lock/tsconfig; never add source aliases or symlinks to make it pass.
+  preview:consumer runs the same checks and keeps a production SSR preview alive.
 - Link stage issues in PRs, keep issue labels honest, and update roadmap/progress.
 - Run checks appropriate to the change; avoid redundant tests and unsupported
   claims of passing tests or product capabilities.

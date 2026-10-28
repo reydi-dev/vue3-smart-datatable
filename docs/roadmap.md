@@ -5,9 +5,9 @@ name `@reydi-dev/vue3-smart-datatable`. Preserve the reference design and useful
 behavior while adopting Vue 3 contracts, strict types, and maintainable layers.
 
 **Status:** in development, not published. No release dates are promised.
-Desktop/mobile UI is implemented with focused RTL/theme/keyboard checks;
-maintainer visual approval and release validation remain. See progress notes for
-verified behavior.
+Desktop/mobile UI and visual review are approved. An independent packed consumer
+now covers strict types, production builds and minimal SSR/browser hydration.
+Release docs/demo and publication remain; see progress notes for verified scope.
 
 ## Delivery milestones
 

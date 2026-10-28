@@ -3,8 +3,9 @@
 **Responsive table implemented; package still private and unpublished.** The root
 exports the generic `SmartDataTable` as both default and named component, types,
 and CSV/storage factories. Both renderers use the stage 5 composables. Focused
-RTL/theme/keyboard checks are implemented; final visual approval and stage 8
-packed-consumer/distribution/SSR verification remain pending.
+RTL/theme/keyboard checks and visual review are complete. Stage 8 validates an
+independently installed tarball, strict declarations, production builds and a
+minimal SSR/browser hydration example. Release docs/demo and publication remain.
 
 This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.
@@ -286,7 +287,7 @@ SmartDataTable SFC. They exercise six models, formatters/slots, event payloads a
 rejected incompatible types. They prove signatures; mounted and browser checks
 provide separate desktop/mobile runtime evidence in the matrix. Source-shell
 hydration has a narrow jsdom check; packed-consumer/SSR/hydration acceptance
-remains stage 8.
+is documented in [distribution validation](distribution-validation.md).
 
 The selected supported baseline stays Vue 3.5.44, TypeScript 5.9.3 and vue-tsc
 3.3.13. Generic SFCs, defineSlots and tuple emits are available from Vue 3.3; this
@@ -360,7 +361,8 @@ Mounted state fixtures verify controlled/uncontrolled handoff, coalescing,
 cancellation, retry, rejected page correction, persistence races and export
 snapshots. The desktop playground now uses the actual table, simulated provider,
 column persistence and CSV download. It remains a development example; the
-release documentation/demo and packed-consumer/SSR acceptance remain later stages.
+release documentation/demo remain later stages; installed-package/SSR evidence
+is recorded in the stage 8 section below.
 
 ## Desktop presentation implemented in stage 6
 
@@ -411,7 +413,7 @@ Both SSR and the first client render use the desktop shell. After mount a narrow
 client switches to mobile. This intentional layout shift avoids guessing a
 viewport on the server. A source-SFC SSR/jsdom hydration check verifies this shell
 transition without mismatch warnings; installed-package/browser hydration and
-support claims remain stage 8.
+support claims are documented in [distribution validation](distribution-validation.md).
 
 Mobile renders a named semantic list of rows, selection checkboxes, reference
 summary fields, native readable details and an explicit keyboard-operable open-row
@@ -439,3 +441,25 @@ light muted token is #687672 to also meet it on the light tint. These checks are
 not an assistive-technology audit or a cross-browser support matrix.
 
 See [actual screenshots and visual approval scope](responsive-review.md).
+
+## Installed distribution verified in stage 8
+
+Default/named SmartDataTable, exported types, CSV/storage factories and the
+separate `@reydi-dev/vue3-smart-datatable/styles.css` export resolve from an actual
+npm tarball in an independent project. That project uses no source aliases,
+workspace resolution or development symlinks. Strict consumer declarations,
+models, generic rows/slots and expected-negative templates compile with the
+selected Vue 3.5.44 / TypeScript 5.9.3 / vue-tsc 3.3.13 toolchain.
+
+The ESM library imports and renders under Node without window/document. A minimal
+installed-package example builds production client/SSR output, serves the actual
+server HTML, holds client JS to inspect the initial desktop shell, then hydrates
+in Chromium at 1280 and 375 px. Narrow layout changes after mount; storage writes
+and downloads are only triggered through browser interactions. This scoped example
+does not establish full Nuxt or additional framework/browser support.
+
+Import styles explicitly in the client entry. The server entry imports the
+component/types/adapters without evaluating a source CSS module. The peer range
+remains ^3.5.44: the declared minimum and current selected stable version are the
+same, so one unique Vue version is tested. See the version table, commands and
+exact evidence scope in [distribution validation](distribution-validation.md).

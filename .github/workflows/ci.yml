@@ -25,3 +25,9 @@ jobs:
       - run: npm run validate
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run test:consumer
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packed-consumer-evidence
+          path: test-results/packed-consumer-report.json
+          retention-days: 7
