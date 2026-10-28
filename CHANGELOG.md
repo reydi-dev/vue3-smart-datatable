@@ -42,4 +42,10 @@
 - Guard the library build graph/archive contents and record CI package evidence.
 - Add a production preview command for the installed package.
 
-The package remains private. Release docs/demo and npm publication are pending.
+- Add four runnable public examples with copyable source and a self-contained quick start.
+- Typecheck all documented Vue/HTTP examples against the installed tarball in CI.
+- Refresh API/migration docs and add real desktop/mobile screenshots and interaction GIF.
+- Exclude development interaction fixtures from the production demo build.
+- Prepare manual Pages deployment gated on successful CI for the exact main commit.
+
+The package remains private. Public demo deployment and npm publication require approval.

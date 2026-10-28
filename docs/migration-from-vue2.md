@@ -1,18 +1,17 @@
-# Migration from Vue 2 — accepted contracts
+# Migration from Vue 2
 
-This guide describes the accepted stage 3 contract. The Vue 3 table is not implemented or
-published yet. Do not replace a production Vue 2 installation with this repository.
-The two repositories and package versions remain independent.
+The Vue 3 component is implemented and verified with an independently installed
+package, strict types, production builds and minimal SSR/browser hydration.
+It is still unpublished. The repositories and version histories are independent;
+this is a migration from `vue2-smart-datatable` v0.3.1, not an in-place upgrade.
 
 ## Package and imports
 
-The intended package is `@reydi-dev/vue3-smart-datatable`, not the existing
-unrelated unscoped npm package. Once released, the intended default/named component
-export is SmartDataTable, with type exports and `@reydi-dev/vue3-smart-datatable/styles.css`.
-The current root exports types, CSV/storage factories, their option types, and
-the temporary PipelineProbe. The real component is not yet exported. No
-adapter subpath is promised until a real independent export is built.
-ESM is the supported build format; no Vue 2 compatibility layer or CJS is planned.
+Use `@reydi-dev/vue3-smart-datatable`, not the unrelated unscoped npm package.
+The root exports default/named SmartDataTable, types and CSV/storage factories.
+Import CSS explicitly from `@reydi-dev/vue3-smart-datatable/styles.css`.
+There are no adapter subpath exports. ESM is the supported format.
+See the [README](../README.md) for installing a local tarball before publication.
 
 ## Models and ownership
 
@@ -78,7 +77,19 @@ Exports keep a query snapshot and do not navigate the visible table. Only one ca
 run at a time. Storage remains optional with version-1 visibility state; stale
 async restores no longer overwrite newer parent/user intent.
 
-The stage 3 contract was approved before the core port. Stage 4 implements pure
-helpers/adapters and stage 5 implements the internal reactive lifecycle. Public
-component/UI integration remains pending.
-The [matrix](contract-matrix.md) records the implementation/verification boundary.
+## Runnable Vue 3 migration
+
+[MigrationExample.vue](examples/MigrationExample.vue) binds all six models and a
+public template ref; copy its [data.ts](examples/data.ts) helper too. These exact
+files are compiled against the installed package in CI. Use `v-model:items-per-page`
+for an editable size: `:items-per-page="10"` deliberately holds the size at 10.
+[http-provider.ts](examples/http-provider.ts) shows a typed POST provider that
+passes AbortSignal to fetch and validates the returned business row shape.
+
+SSR renders a deterministic desktop shell; mobile switches after mount. Keep
+server/client items and formatting inputs identical. Set `dateFormat.timeZone`
+explicitly when using date columns across servers with different default zones.
+The verified SSR scope is described in [distribution validation](distribution-validation.md);
+Nuxt and other browser engines have not been verified.
+
+See the [API](api.md) and [parity matrix](contract-matrix.md) for full contracts.

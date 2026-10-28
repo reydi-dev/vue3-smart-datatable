@@ -20,7 +20,8 @@
 - Use Node from `.nvmrc` and `npm ci`. Current checks: `npm run validate`.
   `npm run dev` starts the playground; `npm run build` emits ESM/CSS/types.
   `test:components` covers mounted state/provider/persistence/export and desktop/mobile UI fixtures.
-  `test:dist` requires the build. Unit tests cover pure core/adapters. `test:e2e` runs four real desktop/mobile browser flows;
+  `test:dist` requires the build. Unit tests cover pure core/adapters. `test:e2e` requires build:demo and runs four development desktop/mobile flows
+  plus one production public-demo flow;
   install Playwright Chromium first (or provide PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH).
   CI runs validate, Chromium E2E and test:consumer on Ubuntu. The consumer check
   requires build and Chromium, installs a real tarball outside the repository,

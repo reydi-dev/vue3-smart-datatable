@@ -40,7 +40,7 @@ test('mobile server layout keeps state/details on resize and supports keyboard, 
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 375, height: 900 })
-  await page.goto('./')
+  await page.goto('./?fixture=interaction')
   await page
     .getByRole('combobox', { name: 'Data source', exact: true })
     .selectOption('server')
@@ -114,7 +114,7 @@ test('RTL/LTR and light/dark stay scoped, keyboard dialog traps focus, long text
   const errors: string[] = []
   page.on('pageerror', (e) => errors.push(e.message))
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.goto('./')
+  await page.goto('./?fixture=interaction')
   await page.evaluate(() => document.body.classList.add('theme--dark'))
   await expect(page.locator('.sdt-root')).toHaveCSS(
     'background-color',

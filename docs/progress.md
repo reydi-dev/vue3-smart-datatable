@@ -536,3 +536,44 @@ Review [stage 8 PR #21](https://github.com/reydi-dev/vue3-smart-datatable/pull/2
 After approval, merge and proceed to stage 9
 (#11): release documentation and demo preparation. Publication/hosting remain
 separate explicit approvals at their planned stages.
+
+## 2026-10-28 — Stage 8 approved/merged; stage 9 documentation and demo
+
+- User approved stage 8. Rechecked PR #21 head
+  `bbdbb3a5c4d62f9582a9dcf7b4b7415196da411d` and successful
+  [CI 40658701973](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/40658701973)
+  before squash merge `a2d75a2d4dc04643b82fe43f7dd25bf3e1b3c029`.
+  Removed the completed branch; #10 is closed, #11 is in progress.
+- Branch: `docs/release-guide-and-demo`. Refreshed English README, API/migration
+  and contributor guidance against actual implemented contracts. Added exact
+  quick-start source synchronization and independently compiled documentation
+  examples, including all six models and a validated abortable HTTP provider.
+- Replaced the public playground with four runnable local/async/slots/RTL examples
+  and copyable source. Kept the old interaction fixture development-only; build
+  checks guard production assets/base path and excluded debug/probe code.
+- Captured real production desktop/mobile screenshots and six interaction frames
+  for a small GIF. Manually inspected both screenshots. No synthetic table mockup
+  or screenshot-only preview is used for maintainer acceptance.
+- Prepared a manual Pages workflow requiring successful push CI for the exact
+  main commit. Pages has not been enabled or deployed; homepage remains unset.
+  Public hosting requires explicit approval after review. See demo.md for steps.
+- Package remains private 0.0.0. No npm publication, tag or GitHub Release.
+
+### Validation and next action
+
+- Full `npm run validate` passed: formatting/lint, positive/negative contracts,
+  README/source equality, 25 unit tests, 37 component tests, library ESM/CSS/types,
+  two distribution checks and production demo build/base/fixture exclusion.
+- The independent packed consumer passed all documented examples with strict
+  declarations, its original negative fixtures, production client/server builds,
+  DOM-free SSR and desktop/mobile Chromium hydration/interactions. The archive
+  contains 39 intended files; documentation/media are outside its whitelist.
+- Public-demo Chromium traversal passed all four examples, copyable source,
+  fragment reload and RTL/theme behavior. The four development interaction flows
+  passed after fixture separation. Existing local Chromium 140.0.7339.16 was used;
+  CI installs the matching Playwright browser on Ubuntu. No extra browser claim.
+- The deployment CI guard was exercised read-only against the actual successful
+  main commit. No Pages deployment was attempted. Final-head CI is linked in PR.
+
+Review the production preview and [stage 9 PR #22](https://github.com/reydi-dev/vue3-smart-datatable/pull/22)
+before approving merge and public demo deployment; beta publication remains stage 10 (#12).
