@@ -57,8 +57,8 @@ on PRs and main using `npm ci`. The distribution check is a preliminary output
 check, not the independently installed consumer verification planned in stage 8.
 
 Unit tests for pure core/adapters are implemented and run in CI from stage 4.
-CI also installs Playwright Chromium on Ubuntu and executes two real local/server
-E2E flows. Browser installation/test commands remain separate from validate.
+CI also installs Playwright Chromium on Ubuntu and executes four real desktop/
+mobile E2E flows. Browser installation/test commands remain separate from validate.
 No placeholder assertions or coverage target is used. Browser verification is
 limited to the environments recorded in progress; a support matrix remains later.
 
@@ -151,8 +151,7 @@ There is no sorting/filtering/provider pipeline embedded in a renderer.
 Reference Clarity CSS is adapted as plain CSS under the existing sdt namespace,
 with original tokens, inherited font, independent palettes and no framework/font
 or Sass dependency. The SFC includes styles for Vite extraction; the TypeScript
-entry never imports a source CSS path. Mobile renderer styles will arrive with
-stage 7 rather than claiming an unwritten renderer.
+entry never imports a source CSS path. Stage 7 adds the reference mobile renderer styles.
 
 Desktop, filters, pagination, cells, SVG icons, actions, export disclosure and
 native column dialog are separate generic setup components. Dialog/document
@@ -164,5 +163,36 @@ Dynamic specific slots are detected during render, avoiding a cached $slots
 presence check that would miss conditional parent changes. UI integration tests
 exercise these paths and the actual default booleans, model proposals, exact
 payloads and public ref surface. The browser suite covers local/server controls,
-error/retry, keyboard/dialog focus and a real CSV download. Stage 8 still owns
+error/retry, keyboard/dialog focus and a real CSV download. Stage 7 extends these
+checks to mobile/RTL/themes. Stage 8 still owns
 independent packed-consumer and SSR hydration validation.
+
+## Stage 7 responsive rendering and interaction
+
+useResponsiveLayout observes the browser viewport only after mount, with one
+passive resize listener and scope cleanup. A null initial width always means
+desktop, including server rendering and the first hydration render. A numeric
+breakpoint uses strict width < threshold; no legacy breakpoint aliases return.
+This keeps layout choice separate from model/query ownership.
+
+SmartDataTable switches actual imported component objects without remounting the
+coordinator. Both renderers disable arbitrary attribute fallthrough; internal
+renderer-specific props/events cannot leak onto the other's DOM root. Open mobile
+details are tracked by typed row keys at the table level, retained across resize
+for current rows and pruned when those rows leave the page. No new public model
+or exposed method is introduced.
+
+SmartTableRowActions shares action predicates, guarded trigger payloads, ordering
+and native disclosures across renderers. Mobile uses reference summary/details
+rules, generic cell/action slots and accessible list/disclosure/open-row controls.
+Shared cells retain bidi isolation and safe formatting; pagination isolates
+numeric ranges for RTL. Table naming, header hit area and focused palette contrast
+receive small accessibility fixes rather than a visual redesign.
+
+Four focused mounted scenarios cover boundary changes, state/details retention,
+observer cleanup, mobile contexts/guards and a source SSR/jsdom hydration shell.
+Two added Chromium flows cover real resize/provider preservation, keyboard mobile
+controls, dialog Tab/Escape/focus, scope/contrast, narrow overflow checks and actual
+screenshots. Source hydration evidence does not replace the installed package and
+browser SSR/hydration validation scheduled in stage 8. No new dependency or browser
+support matrix is introduced.

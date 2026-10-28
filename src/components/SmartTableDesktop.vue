@@ -3,7 +3,7 @@
 import { computed } from 'vue'
 import SmartTableIcon from './SmartTableIcon.vue'
 import SmartTableCell from './SmartTableCell.vue'
-import SmartTableAction from './SmartTableAction.vue'
+import SmartTableRowActions from './SmartTableRowActions.vue'
 import { isInteractiveTarget, inputChecked } from './interactions.js'
 import { resolveColumnValue, formatColumnValue } from '../core/columns.js'
 import type {
@@ -20,6 +20,7 @@ import type {
   SmartDataTableSlots,
   SortState,
 } from '../types/index.js'
+defineOptions({ inheritAttrs: false })
 const props = defineProps<{
   rows: readonly Row[]
   columns: readonly DataTableColumn<Row>[]
@@ -45,7 +46,10 @@ const emit = defineEmits<{
   'row-action': [payload: RowActionEvent<Row>]
   'cell-click': [payload: CellClick<Row>]
 }>()
-defineSlots<SmartDataTableSlots<Row>>()
+const slots = defineSlots<SmartDataTableSlots<Row>>()
+function actionSlots() {
+  return props.actions.filter((a) => slots[`action.${a.key}`])
+}
 const pageKeys = computed(() => props.rows.map(props.rowKeyOf))
 const allPageSelected = computed(
   () =>
@@ -66,7 +70,7 @@ function columnStyle(c: DataTableColumn<Row>) {
     minWidth: typeof c.minWidth === 'number' ? `${c.minWidth}px` : c.minWidth,
   }
 }
-function context(
+function cellContext(
   row: Row,
   column: DataTableColumn<Row>,
   rowIndex: number,
@@ -99,45 +103,6 @@ function keyRow(row: Row, index: number, event: KeyboardEvent) {
     activateRow(row, index, event)
   }
 }
-function visibleActions(row: Row) {
-  return props.actions.filter((a) =>
-    typeof a.visible === 'function' ? a.visible(row) : a.visible !== false,
-  )
-}
-function inlineActions(row: Row) {
-  return visibleActions(row)
-    .filter((a) => a.position !== 'menu')
-    .sort(
-      (a, b) =>
-        Number(b.position === 'leading') - Number(a.position === 'leading'),
-    )
-}
-function menuActions(row: Row) {
-  return visibleActions(row).filter((a) => a.position === 'menu')
-}
-function actionLoading(a: RowAction<Row>, row: Row) {
-  return typeof a.loading === 'function' ? a.loading(row) : Boolean(a.loading)
-}
-function actionDisabled(a: RowAction<Row>, row: Row) {
-  return (
-    Boolean(props.disabled) ||
-    (typeof a.disabled === 'function' ? a.disabled(row) : Boolean(a.disabled))
-  )
-}
-function triggerAction(action: RowAction<Row>, row: Row, event: MouseEvent) {
-  if (!actionDisabled(action, row) && !actionLoading(action, row))
-    emit('row-action', { action, row, rowKey: props.rowKeyOf(row), event })
-}
-function actionContext(action: RowAction<Row>, row: Row) {
-  return {
-    action,
-    row,
-    rowKey: props.rowKeyOf(row),
-    disabled: actionDisabled(action, row),
-    loading: actionLoading(action, row),
-    trigger: (event: MouseEvent) => triggerAction(action, row, event),
-  }
-}
 </script>
 <template>
   <div
@@ -151,7 +116,7 @@ function actionContext(action: RowAction<Row>, row: Row) {
     role="region"
     :aria-label="messages.table"
   >
-    <table class="sdt-desktop__table">
+    <table class="sdt-desktop__table" :aria-label="messages.table">
       <thead>
         <tr>
           <th v-if="selectable" scope="col" class="sdt-column--selection">
@@ -248,8 +213,8 @@ function actionContext(action: RowAction<Row>, row: Row) {
           >
             <slot
               :name="`cell.${column.key}`"
-              v-bind="context(row, column, index)"
-              ><slot name="cell" v-bind="context(row, column, index)">
+              v-bind="cellContext(row, column, index)"
+              ><slot name="cell" v-bind="cellContext(row, column, index)">
                 <SmartTableCell
                   :row="row"
                   :row-key-value="rowKeyOf(row)"
@@ -263,41 +228,25 @@ function actionContext(action: RowAction<Row>, row: Row) {
             ></slot>
           </td>
           <td v-if="actions.length" class="sdt-align--center" @click.stop>
-            <slot
-              name="row-actions"
+            <SmartTableRowActions
               :row="row"
-              :row-key="rowKeyOf(row)"
-              :actions="visibleActions(row)"
-              :disabled="Boolean(disabled)"
+              :row-key-of="rowKeyOf"
+              :actions="actions"
+              :disabled="disabled"
+              :messages="messages"
+              :icons="icons"
+              @row-action="emit('row-action', $event)"
             >
-              <template v-for="action in inlineActions(row)" :key="action.key"
-                ><slot
-                  :name="`action.${action.key}`"
-                  v-bind="actionContext(action, row)"
-                  ><SmartTableAction
-                    :action="action"
-                    :disabled="actionDisabled(action, row)"
-                    :loading="actionLoading(action, row)"
-                    @click="triggerAction(action, row, $event)" /></slot
-              ></template>
-              <details v-if="menuActions(row).length" class="sdt-actions-menu">
-                <summary :aria-label="messages.actions">
-                  <SmartTableIcon :icon="icons.actions" />
-                </summary>
-                <div class="sdt-actions-menu__panel">
-                  <template v-for="action in menuActions(row)" :key="action.key"
-                    ><slot
-                      :name="`action.${action.key}`"
-                      v-bind="actionContext(action, row)"
-                      ><SmartTableAction
-                        :action="action"
-                        :disabled="actionDisabled(action, row)"
-                        :loading="actionLoading(action, row)"
-                        @click="triggerAction(action, row, $event)" /></slot
-                  ></template>
-                </div>
-              </details>
-            </slot>
+              <template v-if="slots['row-actions']" #row-actions="context"
+                ><slot name="row-actions" v-bind="context"
+              /></template>
+              <template
+                v-for="action in actionSlots()"
+                :key="action.key"
+                #[`action.${action.key}`]="context"
+                ><slot :name="`action.${action.key}`" v-bind="context"
+              /></template>
+            </SmartTableRowActions>
           </td>
         </tr>
       </tbody>

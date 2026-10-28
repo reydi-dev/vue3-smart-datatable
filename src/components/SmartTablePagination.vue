@@ -14,7 +14,8 @@
       </select>
     </label>
     <span class="sdt-pagination__count" aria-live="polite"
-      >{{ firstItem }}–{{ lastItem }} {{ labels.of }} {{ total }}</span
+      ><bdi>{{ firstItem }}–{{ lastItem }}</bdi> {{ labels.of }}
+      <bdi>{{ total }}</bdi></span
     >
     <div class="sdt-pagination__navigation">
       <button
@@ -27,7 +28,8 @@
         <SmartTableIcon :icon="previousIcon" :size="18" />
       </button>
       <span class="sdt-pagination__page"
-        >{{ currentPage }} {{ labels.of }} {{ pageCount }}</span
+        ><bdi>{{ currentPage }}</bdi> {{ labels.of }}
+        <bdi>{{ pageCount }}</bdi></span
       >
       <button
         type="button"
@@ -65,7 +67,7 @@
         :id="errorId"
         class="sdt-pagination__error"
         role="alert"
-        >{{ labels.invalidPage }} 1–{{ pageCount }}</span
+        >{{ labels.invalidPage }} <bdi>1–{{ pageCount }}</bdi></span
       >
     </form>
   </div>

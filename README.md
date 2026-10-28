@@ -5,17 +5,19 @@ UI framework.
 
 **In development — not published.** The planned npm package is
 `@reydi-dev/vue3-smart-datatable`. No installable Vue 3 release is available yet.
-The development playground now runs the desktop table with synthetic local/server data.
-Mobile rendering and release validation are still in progress.
+The development playground runs responsive desktop/mobile tables with synthetic
+local/server data. Release/distribution validation is still in progress.
 
 ## Goal and progress
 
 The first release targets local/server data, sorting, filters, pagination,
 selection, responsive desktop/mobile layouts, RTL, themes, custom cells and CSV.
-The desktop component implements sorting, filtering, pagination, selection,
-column visibility, row actions, all 12 cell types, typed slots, CSV integration
-and persisted column choices. Mobile rendering, the RTL/theme/accessibility
-review, packed-consumer/SSR verification and publication remain later stages.
+The component implements responsive desktop/mobile rendering, local/server
+queries, sorting, filtering, pagination, selection, column visibility, row actions,
+all 12 cell types, typed slots, CSV and persisted column choices. RTL/LTR and
+light/dark layouts have focused keyboard/contrast/browser checks; see the
+[visual review](docs/responsive-review.md). Packed-consumer/SSR verification and
+publication remain later stages.
 
 - [Roadmap and scope](docs/roadmap.md)
 - [Milestones](https://github.com/reydi-dev/vue3-smart-datatable/milestones)
@@ -39,7 +41,7 @@ npm run validate
 
 Validation checks formatting, lint, positive/negative contract types against the
 real component, pure core/adapters, mounted state/UI fixtures, package outputs
-and the playground build. CI also installs Chromium and runs two browser flows:
+and the playground build. CI also installs Chromium and runs four browser flows:
 
 ```sh
 npx playwright install chromium

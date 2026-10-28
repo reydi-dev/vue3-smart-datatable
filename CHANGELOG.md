@@ -28,4 +28,12 @@
 - Replace temporary probes with actual local/server development examples.
 - Add mounted UI checks and Chromium local/server flows to PR CI.
 
-The package remains private. Mobile/release validation and npm publication are pending.
+- Add reference mobile summary/details with shared state and responsive cleanup.
+- Retain open mobile details while switching layouts on the current page.
+- Share guarded row actions between renderers; improve RTL numeric isolation.
+- Check native keyboard/focus, scoped light/dark themes and narrow layouts.
+- Adjust light muted text one shade darker for the tested contrast target.
+- Add source hydration-shell checks and real responsive screenshots/browser flows.
+
+The package remains private. Maintainer visual approval, distribution/SSR release
+validation and npm publication are pending.
