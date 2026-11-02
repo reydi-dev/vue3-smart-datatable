@@ -101,8 +101,8 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', readHash))
       </details>
     </details>
     <footer class="showcase-footer">
-      Synthetic data only. Resize to try the mobile layout. npm publication and
-      public hosting are pending release approval.
+      Synthetic data only. Resize to try the mobile layout. The npm package is
+      not published yet.
     </footer>
   </main>
 </template>

@@ -48,4 +48,6 @@
 - Exclude development interaction fixtures from the production demo build.
 - Prepare manual Pages deployment gated on successful CI for the exact main commit.
 
-The package remains private. Public demo deployment and npm publication require approval.
+- Publish the approved HTTPS GitHub Pages demo and verify its public examples/assets.
+
+The npm package remains private. Beta publication requires its release approval.

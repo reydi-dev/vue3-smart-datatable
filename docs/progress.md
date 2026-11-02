@@ -577,3 +577,29 @@ separate explicit approvals at their planned stages.
 
 Review the production preview and [stage 9 PR #22](https://github.com/reydi-dev/vue3-smart-datatable/pull/22)
 before approving merge and public demo deployment; beta publication remains stage 10 (#12).
+
+## 2026-11-03 — Stage 9 approved, merged and demo published
+
+- User explicitly approved merging stage 9 and publishing its GitHub Pages demo.
+  Rechecked PR #22 head `ea5ea997399109efbf89df604454689df6761d29` and successful
+  checks, then squash-merged as `1edf1610b187ef8fb4a26adc7935b2a74a48da2b`.
+  Deleted its local/remote branch; #11 is closed.
+- [Main CI 41520410288](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/41520410288)
+  passed. Enabled Pages with workflow builds and HTTPS; manually dispatched
+  [deployment 41520813932](https://github.com/reydi-dev/vue3-smart-datatable/actions/runs/41520813932)
+  only after exact-main CI succeeded. Both build/deploy jobs passed.
+- Actual public URL: https://reydi-dev.github.io/vue3-smart-datatable/.
+  HTTP 200 and script/stylesheet loads were verified against the public site.
+  The existing production-demo Chromium test passed against this URL: all four
+  examples, page size, async filtering, custom action, RTL/theme, source and hash reload.
+- Additional focused public checks verified desktop rendering and 375 px mobile
+  Persian RTL/dark/expanded details without document overflow or page errors.
+  Local browser remains existing Chromium 140.0.7339.16 on macOS 13. Evidence
+  (screenshots/asset report) is in ignored test-results/live-evidence.
+- Follow-up branch `docs/live-demo-links` connects README/package/repository
+  homepage to the verified live site, updates the runbook/roadmap/changelog and
+  removes the old hosting-pending footer. It changes no library runtime/API.
+  Its PR records final CI/merge/redeployment evidence without creating a new stage.
+- The package is still private 0.0.0: no npm publication, Git tag or GitHub Release.
+  Next: stage 10 (#12), prepare 0.1.0-beta.1 and a final release checklist/tarball
+  for approval before npm publication.
