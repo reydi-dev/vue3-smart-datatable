@@ -6,28 +6,16 @@ A TypeScript-ready data table for Vue 3, with no required UI framework. Local an
 async data use the same responsive table, with filters, sorting, selection, typed
 slots, RTL, light/dark themes and optional CSV/persistence adapters.
 
+[Live demo](https://reydi-dev.github.io/vue3-smart-datatable/) · [Quick start](#quick-start) · [Examples](#examples) · [API reference](https://github.com/reydi-dev/vue3-smart-datatable/blob/main/docs/api.md)
+
+[![Vue 3 data table on desktop and mobile](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/80f76a00a5f45b4e01167afd5d8cf69b9b19bef5/docs/media/responsive-preview.png)](https://reydi-dev.github.io/vue3-smart-datatable/)
+
+Desktop and mobile views captured from the live Vue 3 demo, arranged side by side.
+
 **Unpublished preview.** The package name is `@reydi-dev/vue3-smart-datatable`.
 It has not been published to npm. Do not install the unrelated unscoped
 `vue3-smart-datatable` package as a substitute. The independent
 [Vue 2 library](https://github.com/reydi-dev/vue2-smart-datatable) remains separate.
-
-## Demo and previews
-
-[Open the live demo](https://reydi-dev.github.io/vue3-smart-datatable/).
-
-Try local data, a cancellable async provider, custom cells/actions and
-Persian/RTL with themes. All records are synthetic. To preview it locally:
-
-```sh
-npm ci
-npm run build:demo
-npm run preview:demo
-```
-
-Open the `/vue3-smart-datatable/` URL printed by Vite. To inspect an actually
-installed tarball's production SSR example, run `npm run build` followed by
-`npm run preview:consumer`. See the
-[demo/deployment guide](https://github.com/reydi-dev/vue3-smart-datatable/blob/main/docs/demo.md).
 
 ## Install the preview today
 
@@ -50,9 +38,7 @@ Then, from your Vue 3 application directory:
 npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.0.0.tgz
 ```
 
-This archive installation is checked in an independent project in CI. The
-registry installation command will replace it after an explicitly approved beta
-publication; no registry release is claimed here.
+The archive installation is checked in an independent project in CI.
 
 ## Quick start
 
@@ -121,21 +107,10 @@ custom content. Icons accept SVG definition objects; an external icon font is
 not required. See the full
 [API](https://github.com/reydi-dev/vue3-smart-datatable/blob/main/docs/api.md).
 
-## Actual Vue 3 captures
-
-Desktop/mobile PNGs and the interaction GIF are captured from the built Vue 3
-demo. They are not mockups or captures of the Vue 2 repository.
-
-![Desktop demo](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/desktop.png)
-
-![Mobile RTL and dark demo](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/mobile.png)
-
-![Selection, sorting, filtering and paging in Vue 3](https://raw.githubusercontent.com/reydi-dev/vue3-smart-datatable/c848622bf3ab79f3a838785bd7502132906cabcf/docs/media/interaction.gif)
-
 ## Validation and scope
 
-CI checks strict contracts, focused core/component/browser behavior, production
-demo output and a genuinely installed npm tarball. The tarball consumer verifies
+CI checks strict contracts, core/component/browser behavior, production
+demo output and an independently installed npm tarball. The tarball consumer verifies
 public types/CSS/adapters, normal client/server builds, Node import/SSR without
 DOM globals, and controlled production hydration in Chromium at desktop/mobile
 widths. The same table uses a desktop server/initial-client shell and switches
