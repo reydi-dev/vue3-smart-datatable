@@ -35,7 +35,7 @@ npm pack
 Then, from your Vue 3 application directory:
 
 ```sh
-npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.0.0.tgz
+npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.1.0-beta.1.tgz
 ```
 
 The archive installation is checked in an independent project in CI.

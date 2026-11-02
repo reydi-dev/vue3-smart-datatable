@@ -611,3 +611,19 @@ before approving merge and public demo deployment; beta publication remains stag
 - Added quick navigation and shortened preview/release-process detail while
   preserving accurate unpublished installation and verified compatibility notes.
 - The Vue 2 reference was read from its pinned Git tag; its checkout was not changed.
+
+## 2026-11-03 — Stage 10 beta preparation
+
+- Stage 10 (#12) started after maintainer instruction. Candidate version is
+  `0.1.0-beta.1` on branch `chore/beta-release-preparation` with explicit
+  public access and `next` dist-tag. No publication has been attempted.
+- npm identity returned `reydi-dev`; the scoped package lookup returned 404.
+  This does not reserve the name or establish publish permissions. The only open
+  roadmap issues at preflight were stages 10 and 11; no open blocker was reported.
+- Release steps, acceptance checks and remaining approval are in
+  [beta release checklist](beta-release.md). CI/PR evidence is recorded in the PR.
+- Local candidate validation passed: `npm run validate` (25 unit, 37 component,
+  2 distribution checks, types and both builds), all five Chromium flows, and
+  the independently installed packed consumer with documented examples, SSR,
+  desktop/mobile hydration and interaction checks. Local Chromium 140 was used.
+  The installed tarball contained 39 intended files. No npm publish was run.
