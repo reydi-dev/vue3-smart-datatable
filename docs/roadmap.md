@@ -7,7 +7,8 @@ behavior while adopting Vue 3 contracts, strict types, and maintainable layers.
 **Status:** in development, not published. No release dates are promised.
 Desktop/mobile UI and visual review are approved. An independent packed consumer
 now covers strict types, production builds and minimal SSR/browser hydration.
-Release docs/demo and publication remain; see progress notes for verified scope.
+Documentation and the production demo are prepared for review. Public hosting
+and package publication await their approval gates; see progress for evidence.
 
 ## Delivery milestones
 

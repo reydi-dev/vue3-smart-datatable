@@ -5,7 +5,12 @@ exports the generic `SmartDataTable` as both default and named component, types,
 and CSV/storage factories. Both renderers use the stage 5 composables. Focused
 RTL/theme/keyboard checks and visual review are complete. Stage 8 validates an
 independently installed tarball, strict declarations, production builds and a
-minimal SSR/browser hydration example. Release docs/demo and publication remain.
+minimal SSR/browser hydration example. The package is unpublished.
+
+Start with [QuickStart.vue](examples/QuickStart.vue), then the runnable
+[local](examples/LocalExample.vue), [async](examples/AsyncExample.vue),
+[slots/actions](examples/SlotsExample.vue) and [Persian RTL](examples/RtlExample.vue)
+examples. CI typechecks their exact source against the installed tarball.
 
 This contract is based on Vue 2 `v0.3.1`, commit
 `3e36971d0bb7b5e0f3fbbffdecadf68c4cd5af12`.

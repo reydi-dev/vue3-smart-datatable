@@ -5,7 +5,7 @@ test('local table: selection, sorting, filter reset, column dialog focus, keyboa
 }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
-  await page.goto('./')
+  await page.goto('./?fixture=interaction')
   await expect(page.locator('tbody tr')).toHaveCount(10)
   await page
     .getByRole('checkbox', { name: 'Select row 1', exact: true })
@@ -81,7 +81,7 @@ test('server table: pending navigation, failure/retry, debounced filter, page si
 }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
-  await page.goto('./')
+  await page.goto('./?fixture=interaction')
   await page
     .getByRole('combobox', { name: 'Data source', exact: true })
     .selectOption('server')

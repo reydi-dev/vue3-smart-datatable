@@ -9,7 +9,11 @@
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,
-    "types": ["node"]
+    "types": ["node", "vite/client"],
+    "baseUrl": ".",
+    "paths": {
+      "@reydi-dev/vue3-smart-datatable": ["src/index.ts"]
+    }
   },
   "include": [
     "src/**/*.ts",

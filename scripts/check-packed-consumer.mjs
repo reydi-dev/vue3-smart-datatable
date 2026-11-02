@@ -86,6 +86,9 @@ try {
     recursive: true,
     filter: (path) => !path.split(sep).includes('node_modules'),
   })
+  await cp(join(root, 'docs/examples'), join(consumer, 'src/documented'), {
+    recursive: true,
+  })
   assert.ok(
     !(await realpath(consumer)).startsWith(await realpath(root)),
     'Consumer must be outside the repository',
