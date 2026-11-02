@@ -603,3 +603,11 @@ before approving merge and public demo deployment; beta publication remains stag
 - The package is still private 0.0.0: no npm publication, Git tag or GitHub Release.
   Next: stage 10 (#12), prepare 0.1.0-beta.1 and a final release checklist/tarball
   for approval before npm publication.
+
+## 2026-11-03 — README responsive preview refresh
+
+- Replaced three separated media embeds with one early, linked desktop/mobile
+  composition made from real public Vue 3 demo captures using synthetic data.
+- Added quick navigation and shortened preview/release-process detail while
+  preserving accurate unpublished installation and verified compatibility notes.
+- The Vue 2 reference was read from its pinned Git tag; its checkout was not changed.
