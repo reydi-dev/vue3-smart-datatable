@@ -641,3 +641,30 @@ before approving merge and public demo deployment; beta publication remains stag
   remove `latest` returned HTTP 403; cause unknown. Issue #27 tracks this
   discrepancy and #12 remains open until it is resolved or accepted. Unqualified
   installation currently resolves to the beta. No stable version is claimed.
+
+## 2026-11-03 — Stage 11 stable release preparation
+
+- Maintainer tested the live Vue 3 package lab and reported no unexpected
+  behavior. The lab installed beta 0.1.0-beta.1 from npm and its focused browser
+  flows and CI passed. This is a limited feedback round, not a broad ecosystem audit.
+- Preparing `0.1.0` on `chore/stable-release-preparation`. npm `latest` still
+  points to the beta; issue #27 remains open until stable publication and registry
+  verification. The package release is not yet approved or published.
+- The independent Vue 2 and Vue 3 repositories are maintained separately:
+  address bugs according to impact and need; no synchronized version numbers
+  or automatic copying of changes are required.
+- See [stable release checklist](stable-release.md) for the exact gate and
+  post-publication checks. Record candidate integrity and validation in the PR.
+- Registry preflight returned no match for `0.1.0`; current `latest` and `next`
+  point to beta. The 404 does not reserve a version. The public demo returned 200.
+- Local validation passed: clean npm ci, full validate (25 unit, 37 component,
+  two distribution checks, typecheck and both builds), five Chromium flows,
+  and the independent packed consumer's strict types, production builds, Node SSR,
+  desktop/mobile hydration and selection/query/storage/CSV interactions.
+- Installed the actual `0.1.0` candidate tarball into a temporary copy of
+  `vue3-package-lab`, confirmed its installed version and non-symlink status, and
+  passed that lab's build and two browser flows. Its display label remained the
+  original beta-baseline label; package version was independently checked. The
+  original lab working tree stayed clean and retained the published beta.
+- The independently tested archives matched integrity. Local browser: existing
+  Chromium 140.0.7339.16 on macOS 13; no additional browser or Nuxt claim.

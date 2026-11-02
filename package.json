@@ -1,6 +1,6 @@
 {
   "name": "@reydi-dev/vue3-smart-datatable",
-  "version": "0.1.0-beta.1",
+  "version": "0.1.0",
   "description": "A TypeScript-ready Vue 3 data table with local/async data, responsive layouts, RTL, typed slots and CSV.",
   "license": "MIT",
   "author": "Mohammad Reza Dehghani",
@@ -75,6 +75,6 @@
   "homepage": "https://reydi-dev.github.io/vue3-smart-datatable/",
   "publishConfig": {
     "access": "public",
-    "tag": "next"
+    "tag": "latest"
   }
 }
