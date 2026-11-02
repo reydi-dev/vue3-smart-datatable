@@ -2,7 +2,7 @@
 
 ## 0.1.0
 
-- First stable release candidate of the independent Vue 3 table, following beta
+- First stable release of the independent Vue 3 table, following beta
   consumer feedback and the checks documented in the release PR.
 - No intentional public API or runtime behavior changes from 0.1.0-beta.1.
 

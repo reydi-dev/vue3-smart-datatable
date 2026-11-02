@@ -1,11 +1,11 @@
 # Vue 3 API contracts
 
-**Responsive table implemented; beta 0.1.0-beta.1 is available on npm.** The root
+**Responsive table implemented; stable 0.1.0 is available on npm.** The root
 exports the generic `SmartDataTable` as both default and named component, types,
 and CSV/storage factories. Both renderers use the stage 5 composables. Focused
 RTL/theme/keyboard checks and visual review are complete. Stage 8 validates an
 independently installed tarball, strict declarations, production builds and a
-minimal SSR/browser hydration example. The package is a prerelease.
+minimal SSR/browser hydration example. The verified minimum Vue version is 3.5.44.
 
 Start with [QuickStart.vue](examples/QuickStart.vue), then the runnable
 [local](examples/LocalExample.vue), [async](examples/AsyncExample.vue),

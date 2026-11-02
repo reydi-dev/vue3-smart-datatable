@@ -20,7 +20,7 @@ for availability. The unrelated unscoped
 
 ## Install
 
-After the approved `0.1.0` release is available on npm:
+Install the stable release from npm:
 
 ```sh
 npm install @reydi-dev/vue3-smart-datatable
@@ -45,8 +45,7 @@ Then, from your Vue 3 application directory:
 npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.1.0.tgz
 ```
 
-The archive installation is checked in an independent project in CI. During
-preparation, `latest` pointed to the beta; see [issue #27](https://github.com/reydi-dev/vue3-smart-datatable/issues/27) for its current status.
+The archive installation is checked in an independent project in CI. `latest` points to stable `0.1.0`; `next` remains on `0.1.0-beta.1`.
 
 ## Quick start
 
