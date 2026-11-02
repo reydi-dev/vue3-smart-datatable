@@ -50,4 +50,4 @@
 
 - Publish the approved HTTPS GitHub Pages demo and verify its public examples/assets.
 
-This beta candidate is not published yet. Publication requires release approval.
+Beta releases are prereleases and are distributed using the `next` tag.
