@@ -1,6 +1,12 @@
 # Changelog
 
-## 0.1.0-beta.1 — release candidate
+## 0.1.0
+
+- First stable release candidate of the independent Vue 3 table, following beta
+  consumer feedback and the checks documented in the release PR.
+- No intentional public API or runtime behavior changes from 0.1.0-beta.1.
+
+## 0.1.0-beta.1
 
 - Initialize the independent Vue 3 repository and MIT license.
 - Record the implementation plan, scope, and pinned Vue 2 reference.
