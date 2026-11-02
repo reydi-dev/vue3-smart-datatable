@@ -627,3 +627,17 @@ before approving merge and public demo deployment; beta publication remains stag
   the independently installed packed consumer with documented examples, SSR,
   desktop/mobile hydration and interaction checks. Local Chromium 140 was used.
   The installed tarball contained 39 intended files. No npm publish was run.
+
+## 2026-11-03 — Beta publication and registry tag follow-up
+
+- Maintainer approved PR #26 and public npm beta/tag/prerelease. Squash merged
+  as `16705890c18292599e4fd55a13b6fe01862c1df2`; its tree and tarball
+  integrity matched the approved head. Main CI 41527223399 passed.
+- Published `@reydi-dev/vue3-smart-datatable@0.1.0-beta.1` public with explicit
+  `--tag next`. Registry integrity matched the tested archive. An independent
+  npm `@next` install and Vue SSR row render passed. Git tag and GitHub prerelease
+  point to the same commit.
+- npm also returned a `latest` dist-tag pointing at the beta. An attempt to
+  remove `latest` returned HTTP 403; cause unknown. Issue #27 tracks this
+  discrepancy and #12 remains open until it is resolved or accepted. Unqualified
+  installation currently resolves to the beta. No stable version is claimed.

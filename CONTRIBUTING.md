@@ -1,6 +1,6 @@
 # Contributing
 
-This library is in development and has no published Vue 3 release yet.
+This library is in development; Vue 3 beta 0.1.0-beta.1 is published.
 
 Use a descriptive branch such as `feat/public-contracts` or `chore/tooling`.
 Never include `codex` in branch names. Open a pull request against `main`. Keep changes focused

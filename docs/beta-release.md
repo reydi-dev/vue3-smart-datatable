@@ -1,11 +1,11 @@
 # First beta release checklist
 
 Candidate: `@reydi-dev/vue3-smart-datatable@0.1.0-beta.1`, scoped public access,
-`next` dist-tag. This candidate is **not yet published**. The beta is ESM-only,
+`next` dist-tag. This beta was published on 2026-11-03. The beta is ESM-only,
 requires Vue `^3.5.44`, and has focused Chromium and SSR evidence, not a broad
 browser or Nuxt compatibility promise. See [distribution validation](distribution-validation.md).
 
-## Before approval
+## Original release checks
 
 - Review issue #12, blocking bugs, release diff, CI and actual demo.
 - Run the repository checks and installed tarball consumer against the candidate.
@@ -13,7 +13,7 @@ browser or Nuxt compatibility promise. See [distribution validation](distributio
 - Verify npm identity and registry name availability again; a 404 does not reserve it.
 - Get explicit maintainer approval for merge, public npm beta and Git tag/Release.
 
-## After approval
+## Publication procedure
 
 - Recheck PR head and CI, squash-merge and ensure main's tree matches the approved
   candidate. Check main CI and repeat packaging from the merged commit; compare
