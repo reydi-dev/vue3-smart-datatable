@@ -12,16 +12,17 @@ slots, RTL, light/dark themes and optional CSV/persistence adapters.
 
 Desktop and mobile views captured from the live Vue 3 demo, arranged side by side.
 
-**Unpublished preview.** The package name is `@reydi-dev/vue3-smart-datatable`.
-It has not been published to npm. Do not install the unrelated unscoped
-`vue3-smart-datatable` package as a substitute. The independent
+**Beta candidate.** The package name is `@reydi-dev/vue3-smart-datatable`.
+Check the [npm package page](https://www.npmjs.com/package/@reydi-dev/vue3-smart-datatable)
+for availability. The unrelated unscoped
+`vue3-smart-datatable` package is a different project. The independent
 [Vue 2 library](https://github.com/reydi-dev/vue2-smart-datatable) remains separate.
 
-## Install the preview today
+## Install
 
 Use Vue **3.5.44+**. The verified baseline is Vue 3.5.44, TypeScript 5.9.3 and
 vue-tsc 3.3.13. The library is ESM-only; import its CSS explicitly. To use the
-unpublished build in an existing Vue 3 application:
+candidate before registry publication in an existing Vue 3 application:
 
 ```sh
 # Build an actual local npm archive (Node 24.21.0 / npm 11+ tooling).
@@ -35,10 +36,15 @@ npm pack
 Then, from your Vue 3 application directory:
 
 ```sh
-npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.0.0.tgz
+npm install /absolute/path/to/reydi-dev-vue3-smart-datatable-0.1.0-beta.1.tgz
 ```
 
-The archive installation is checked in an independent project in CI.
+The archive installation is checked in an independent project in CI. After the
+beta is published, install it from npm with:
+
+```sh
+npm install @reydi-dev/vue3-smart-datatable@next
+```
 
 ## Quick start
 

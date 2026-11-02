@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.0-beta.1 — release candidate
 
 - Initialize the independent Vue 3 repository and MIT license.
 - Record the implementation plan, scope, and pinned Vue 2 reference.
@@ -50,4 +50,4 @@
 
 - Publish the approved HTTPS GitHub Pages demo and verify its public examples/assets.
 
-The npm package remains private. Beta publication requires its release approval.
+Beta releases are prereleases and are distributed using the `next` tag.
