@@ -13,9 +13,10 @@ It has not been published to npm. Do not install the unrelated unscoped
 
 ## Demo and previews
 
-The production demo includes local data, a cancellable async provider, custom
-cells/actions and Persian/RTL with themes. All records are synthetic. Public
-GitHub Pages hosting is prepared and awaits maintainer deployment approval.
+[Open the live demo](https://reydi-dev.github.io/vue3-smart-datatable/).
+
+Try local data, a cancellable async provider, custom cells/actions and
+Persian/RTL with themes. All records are synthetic. To preview it locally:
 
 ```sh
 npm ci

@@ -1,5 +1,7 @@
 # Demo operations
 
+[Open the live demo](https://reydi-dev.github.io/vue3-smart-datatable/).
+
 The production demo offers local selection/filtering/CSV/persistence, an abortable
 synthetic async provider, custom cells/actions, and Persian RTL with a theme switch.
 Every example exposes its actual source. Data is synthetic; no external service
@@ -32,11 +34,15 @@ documentation tool, not a package/runtime dependency. Commit reviewed media only
 
 ## Public hosting approval and deployment
 
-Public hosting is not enabled by this PR. Repository guidance requires explicit
-maintainer approval before deploying the demo. The prepared workflow is manual;
-merging alone does not deploy anything.
+The maintainer approved public hosting on 2026-11-03. GitHub Pages is enabled
+with GitHub Actions and HTTPS. The first deployment passed and the actual site
+was checked: all four examples, JS/CSS assets, fragment reload and 375 px
+Persian RTL/dark/details. See [progress](progress.md) for the run and commit.
 
-After approval:
+Repository guidance requires explicit maintainer approval for public deployment.
+The workflow remains manual; merging alone does not deploy anything.
+
+For an approved deployment:
 
 1. Merge the reviewed PR and wait for successful push CI on the exact main commit.
 2. Enable GitHub Pages with GitHub Actions as its build source in repository settings.
