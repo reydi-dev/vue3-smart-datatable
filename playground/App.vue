@@ -73,7 +73,7 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', readHash))
         ><a
           href="https://github.com/reydi-dev/vue3-smart-datatable/blob/main/docs/api.md"
           >API reference</a
-        ><span>npm: beta 0.1.0-beta.1</span>
+        ><span>npm: 0.1.0</span>
       </div>
     </header>
     <nav class="showcase-nav" aria-label="Examples">
@@ -102,7 +102,7 @@ onBeforeUnmount(() => window.removeEventListener('hashchange', readHash))
     </details>
     <footer class="showcase-footer">
       Synthetic data only. Resize to try the mobile layout. The npm package is
-      available as a beta.
+      available on npm.
     </footer>
   </main>
 </template>

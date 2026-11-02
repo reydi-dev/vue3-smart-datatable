@@ -4,10 +4,10 @@ Build an independent, UI-framework-neutral Vue 3 table library under the npm
 name `@reydi-dev/vue3-smart-datatable`. Preserve the reference design and useful
 behavior while adopting Vue 3 contracts, strict types, and maintainable layers.
 
-**Status:** npm beta 0.1.0-beta.1 published; [public demo](https://reydi-dev.github.io/vue3-smart-datatable/) live. No release dates are promised.
+**Status:** npm stable 0.1.0 published; [public demo](https://reydi-dev.github.io/vue3-smart-datatable/) live. No release dates are promised.
 Desktop/mobile UI and visual review are approved. An independent packed consumer
 now covers strict types, production builds and minimal SSR/browser hydration.
-Documentation and the public demo are complete. The beta is published; its unexpected `latest` tag is tracked in [#27](https://github.com/reydi-dev/vue3-smart-datatable/issues/27). See progress for evidence.
+Documentation and the public demo are complete. Stable 0.1.0 is published; `latest` now points to stable and `next` remains on beta. See progress for evidence.
 
 ## Delivery milestones
 

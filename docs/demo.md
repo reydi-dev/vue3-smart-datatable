@@ -5,7 +5,7 @@
 The production demo offers local selection/filtering/CSV/persistence, an abortable
 synthetic async provider, custom cells/actions, and Persian RTL with a theme switch.
 Every example exposes its actual source. Data is synthetic; no external service
-or user account is required. The npm package is available as a beta.
+or user account is required. The npm package is available as stable version 0.1.0.
 
 ## Local preview
 

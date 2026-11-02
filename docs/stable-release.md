@@ -1,8 +1,7 @@
 # First stable release checklist
 
 Candidate: `@reydi-dev/vue3-smart-datatable@0.1.0`, public, `latest`. The
-published beta is `0.1.0-beta.1`. This document prepares the release; it does not
-claim that 0.1.0 is already published.
+published beta is `0.1.0-beta.1`. Version 0.1.0 has been published; the checklist below records the release process.
 
 ## Before approval
 

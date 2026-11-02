@@ -668,3 +668,20 @@ before approving merge and public demo deployment; beta publication remains stag
   original lab working tree stayed clean and retained the published beta.
 - The independently tested archives matched integrity. Local browser: existing
   Chromium 140.0.7339.16 on macOS 13; no additional browser or Nuxt claim.
+
+## 2026-11-03 — Stable 0.1.0 published
+
+- Maintainer explicitly approved PR #29, stable npm publication to `latest`,
+  matching Git tag/Release and updates to the lab/demo. Squash-merged candidate
+  as `92889ff705458b63eac3fa459178152d6f8de4ab`; its tree and archive SHA-512
+  matched the reviewed candidate. Main CI 41539059392 passed.
+- Published `@reydi-dev/vue3-smart-datatable@0.1.0` from the verified archive.
+  Registry integrity matched; `latest` points to 0.1.0 while `next` remains on
+  0.1.0-beta.1. A fresh unqualified npm install, CSS resolution and Vue SSR row
+  render passed. Git tag v0.1.0 and the non-prerelease GitHub Release point to
+  the published commit.
+- Stable status documentation and the public demo are updated separately after
+  registry verification. The Vue 3 lab is updated to install the published stable
+  version and rerun its consumer checks; see its PR for final evidence.
+- Browser evidence remains focused Chromium; no broader browser, screen-reader
+  or Nuxt coverage is implied. Vue 2 and Vue 3 are maintained independently.
