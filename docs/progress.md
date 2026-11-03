@@ -685,3 +685,8 @@ before approving merge and public demo deployment; beta publication remains stag
   version and rerun its consumer checks; see its PR for final evidence.
 - Browser evidence remains focused Chromium; no broader browser, screen-reader
   or Nuxt coverage is implied. Vue 2 and Vue 3 are maintained independently.
+
+## README package badges
+
+- Added scoped npm version and total-download badges alongside CI and MIT license,
+  following the established Vue 2 README presentation. Package/runtime unchanged.

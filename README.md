@@ -1,6 +1,9 @@
 # Vue 3 Smart DataTable
 
+[![npm version](https://img.shields.io/npm/v/%40reydi-dev%2Fvue3-smart-datatable.svg)](https://www.npmjs.com/package/@reydi-dev/vue3-smart-datatable)
+[![npm downloads](https://img.shields.io/npm/dt/%40reydi-dev%2Fvue3-smart-datatable.svg)](https://www.npmjs.com/package/@reydi-dev/vue3-smart-datatable)
 [![CI](https://github.com/reydi-dev/vue3-smart-datatable/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/reydi-dev/vue3-smart-datatable/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/reydi-dev/vue3-smart-datatable/blob/main/LICENSE)
 
 A TypeScript-ready data table for Vue 3, with no required UI framework. Local and
 async data use the same responsive table, with filters, sorting, selection, typed
